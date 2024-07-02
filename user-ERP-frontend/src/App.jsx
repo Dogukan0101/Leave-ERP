@@ -1,23 +1,15 @@
-import React from 'react'
-import {
-  Route,
-  createBrowserRouter,
-  createRoutesFromElements,
-  RouterProvider
-} from 'react-router-dom'
-import { Users } from './pages/Users'
-import MainLayout from './layouts/MainLayout'
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path='/' element={<MainLayout />}>
-      <Route index element={<div className='flex flex-row w-full'>dsc</div>} />
-    </Route>
+function App() {
+
+  return (
+    <>
+      
+    </>
   )
-)
-
-const App = () => {
-  return <RouterProvider router={router}/>
 }
 
-export default App;
+export default App
