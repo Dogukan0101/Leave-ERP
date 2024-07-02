@@ -2,14 +2,15 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
+import Users from './pages/Users'
 
-function App() {
+const router = createBrowserRouter(
+  createRoutesFromElements(<Route index element={<Users/>}/>)
+);
 
-  return (
-    <>
-      
-    </>
-  )
+const App = () => {
+  return <RouterProvider router={router}/>
 }
 
 export default App
