@@ -4,12 +4,22 @@ import { useState, useEffect } from 'react';
 
 const EditUserPopup = ({ closePopup, user }) => {
 
+    const [fullName,setFullName] = useState(user.fullName);
+    const [email,setEmail] = useState(user.email);
+    const [restDay,setRestDay] = useState(user.restDay);
+    const [department,setDepartment] = useState(user.department);
+        
+
     const onSubmitFunction = async (event) => {
 
         event.preventDefault();
     
         const userData = {
-          
+          id:user.id,
+          fullName:fullName,
+          email:email,
+          restDay:parseFloat(restDay),
+          department:department
         };
     
         try {
@@ -31,21 +41,15 @@ const EditUserPopup = ({ closePopup, user }) => {
           }
     
           const result = await response.json();
+
           console.log('Success:', result);
         
         } catch (error) {
-
           console.error('Error:', error);
-
         }
 
+        window.location.reload();
       };
-
-
-    useEffect(() => {
-
-    }, []);
-
 
 
   return (
@@ -55,7 +59,7 @@ const EditUserPopup = ({ closePopup, user }) => {
 
                     <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Edit Stock
+                            Edit User
                         </h3>
                         <button
                             onClick={closePopup}
@@ -73,67 +77,63 @@ const EditUserPopup = ({ closePopup, user }) => {
                     <form className="p-4 md:p-5">
                         <div className="grid gap-4 mb-4 ">
                             <label>
-                                Stock name
+                                Full Name
                             </label>
                             <input
                                 type='text'
-                                name="StockName"
-
+                                name="FullName"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                value={stockName}
-                                onChange={(event) => setStockName(event.target.value)}
+                                value={fullName}
+                                onChange={(event) => setFullName(event.target.value)}
                                 required
                             />
-
                         </div>
+
                         <div className="grid gap-4 mb-4 ">
                             <label>
-                                Stock quantity
+                                Email
                             </label>
                             <input
-                                type='number'
-
+                                type='text'
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                onChange={(event) => setstockQuantity(event.target.value)}
-                                value={stockQuantity}
+                                onChange={(event) => setEmail(event.target.value)}
+                                value={email}
                                 required
                             />
-
                         </div>
+
                         <div className="grid gap-4 mb-4 ">
                             <label>
-                                Unit price
+                                Rest Day
                             </label>
                             <input
-                                type='number'
-                                onChange={(event) => setUnitPrice(event.target.value)}
+                                type='text'
+                                onChange={(event) => setRestDay(event.target.value)}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                value={unitPrice}
+                                value={restDay}
                                 required
                             />
-
                         </div>
+                       
                         <div className="grid gap-4 mb-4 ">
                             <label>
-                                Stock Unit
+                                Department
                             </label>
-                            <StyledSelect
-                                value={selectedUnit} onChange={(event) => handleUnitChange(event)}>
-                               {stockUnits.map((unit) =>(
-                                 <option value={unit.toLowerCase()}>{unit.toLowerCase()}</option>
-                               )
-                                
-                               )}
-                                
-                            </StyledSelect>
-
+                            <input
+                                type='text'
+                                onChange={(event) => setDepartment(event.target.value)}
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                value={department}
+                                required
+                            />
                         </div>
+
                         <button
                             onClick={(event) => onSubmitFunction(event)}
                             type="submit"
                             className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                         >
-                            Edit Stock
+                            Edit User
                         </button>
                     </form>
 
@@ -143,4 +143,4 @@ const EditUserPopup = ({ closePopup, user }) => {
   )
 }
 
-export default EditStockPopup
+export default EditUserPopup

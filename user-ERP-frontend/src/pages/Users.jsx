@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { SearchBar } from '../components/SearchBar';
 import { InsertButton } from '../components/InsertButton';
 import AddUserPopup from './AddUserPopup';
+import EditUserPopup from './EditUserPopup';
 
 
 export const Users = () => {
@@ -35,8 +36,6 @@ export const Users = () => {
         fetchUsers();
     }, []);
 
-
-
     const [usersShow, setUsersShow] = useState(usersArray);
 
     const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
@@ -44,8 +43,8 @@ export const Users = () => {
     const closeAddPopup = () => setIsAddPopupOpen(false);
 
     const [isEditPopupOpen, setIsEditPopupOpen] = useState({ show: false, user: null });
-    const openEditPopup = (user) => setIsEditPopupOpen({ show: true, user });
-    const closeEditPopup = () => setIsEditPopupOpen({ show: false, stock: null });
+    const openEditPopup = (userA) => setIsEditPopupOpen({ show: true, user:userA });
+    const closeEditPopup = () => setIsEditPopupOpen({ show: false, user: null });
 
     const searchButtonSubmit = (keyword) => {
         if (keyword == ''){
@@ -94,7 +93,6 @@ export const Users = () => {
                                     <th scope="col" class="px-6 py-3">
                                         Rest Day
                                     </th>
-
                                     <th scope="col" class="px-6 py-3">
                                         Works Since
                                     </th>
@@ -106,7 +104,13 @@ export const Users = () => {
                                     <AddUserPopup
                                         closePopup={closeAddPopup}
                                     />
-                                }                
+                                }     
+                                  
+                                {isEditPopupOpen.show && isEditPopupOpen.user &&
+                                    <EditUserPopup closePopup={closeEditPopup}
+                                        user={isEditPopupOpen.user}
+                                    />
+                                }         
 
                                 {usersShow.map((user, index) => (
                                     
