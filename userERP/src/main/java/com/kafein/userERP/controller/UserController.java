@@ -3,6 +3,7 @@ package com.kafein.userERP.controller;
 import com.kafein.userERP.model.User;
 import com.kafein.userERP.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class UserController {
 
     @CrossOrigin
     @GetMapping("/getAllUsers")
-    public ResponseEntity<List<User>> getAllUsers(){
+    public ResponseEntity<List<User>> getAllUsers() {
 
         List<User> users = userService.getAllUsers();
 
@@ -26,16 +27,30 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.noContent().build();
         }
-    };
+    }
 
-   @PostMapping("/createUser")
-    public ResponseEntity<User> createUser(@RequestBody User userRequest){
-        try{
+    ;
+
+    @CrossOrigin
+    @PostMapping("/createUser")
+    public ResponseEntity<User> createUser(@RequestBody User userRequest) {
+        try {
             return ResponseEntity.ok(userService.createUser(userRequest));
-        }catch(Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
-       }
-   }
+        }
+    }
+
+    @CrossOrigin
+    @PostMapping("/updateUserById")
+    public ResponseEntity<User> updateUserById(@RequestBody User updatedUser){
+        try {
+            userService.updateUserById(updatedUser.getId(), updatedUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok(updatedUser);
+    }
 
 
 }

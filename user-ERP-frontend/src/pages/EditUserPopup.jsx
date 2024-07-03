@@ -1,28 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useState, useEffect } from 'react';
 
 
-const AddUserPopup = ({ closePopup }) => {
-
-    const bg_color = "bg-slate-300"
-
-    const [fullName, setFullName] = useState('')
-    const [email,setEmail]= useState('')
-    const [department,setDepartment]= useState('')
-
+const EditUserPopup = ({ closePopup, user }) => {
 
     const onSubmitFunction = async (event) => {
 
         event.preventDefault();
-        
+    
         const userData = {
-          fullName: fullName,
-          email: email,
-          department: department,
-          restDay: 15
+          
         };
     
         try {
-          const response = await fetch('http://localhost:8080/users/createUser', {
+          const response = await fetch('http://localhost:8080/users/updateUserById', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -30,28 +21,41 @@ const AddUserPopup = ({ closePopup }) => {
             body: JSON.stringify(userData)
           });
     
+          if(response.status==400){
+            toast.warn("User email must be unique")
+            return;
+          }
+
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
     
           const result = await response.json();
           console.log('Success:', result);
+        
         } catch (error) {
+
           console.error('Error:', error);
+
         }
 
-        window.location.reload();
       };
 
 
-    return (
-        <div id="crud-modal" tabindex="-1" aria-hidden="true" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 bottom-0 z-50 flex justify-center items-center bg-gray-800/50">
+    useEffect(() => {
+
+    }, []);
+
+
+
+  return (
+    <div id="crud-modal" tabindex="-1" aria-hidden="true" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 bottom-0 z-50 flex justify-center items-center bg-gray-800/50">
             <div class="relative p-4 w-full max-w-md max-h-full">
                 <div className='relative bg-white rounded-lg shadow dark:bg-gray-700'>
 
                     <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Add User
+                            Edit Stock
                         </h3>
                         <button
                             onClick={closePopup}
@@ -69,61 +73,74 @@ const AddUserPopup = ({ closePopup }) => {
                     <form className="p-4 md:p-5">
                         <div className="grid gap-4 mb-4 ">
                             <label>
-                                Full Name
+                                Stock name
                             </label>
                             <input
                                 type='text'
-                                name="FullName"
+                                name="StockName"
 
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter the Fullname"
-                                onChange={(event) => setFullName(event.target.value)}
+                                value={stockName}
+                                onChange={(event) => setStockName(event.target.value)}
                                 required
                             />
 
                         </div>
                         <div className="grid gap-4 mb-4 ">
                             <label>
-                                Email
+                                Stock quantity
                             </label>
                             <input
-                                type='text'
-                                name='Email'
+                                type='number'
+
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter the email"
-                                onChange={(event) => setEmail(event.target.value)}
+                                onChange={(event) => setstockQuantity(event.target.value)}
+                                value={stockQuantity}
                                 required
                             />
 
                         </div>
-
                         <div className="grid gap-4 mb-4 ">
                             <label>
-                                Department
+                                Unit price
                             </label>
                             <input
-                                type='text'
-                                onChange={(event) => setDepartment(event.target.value)}
+                                type='number'
+                                onChange={(event) => setUnitPrice(event.target.value)}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter the Department:"
+                                value={unitPrice}
                                 required
                             />
 
                         </div>
-                        
+                        <div className="grid gap-4 mb-4 ">
+                            <label>
+                                Stock Unit
+                            </label>
+                            <StyledSelect
+                                value={selectedUnit} onChange={(event) => handleUnitChange(event)}>
+                               {stockUnits.map((unit) =>(
+                                 <option value={unit.toLowerCase()}>{unit.toLowerCase()}</option>
+                               )
+                                
+                               )}
+                                
+                            </StyledSelect>
+
+                        </div>
                         <button
                             onClick={(event) => onSubmitFunction(event)}
                             type="submit"
                             className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                         >
-                            Add User
+                            Edit Stock
                         </button>
                     </form>
 
                 </div>
             </div >
         </div >
-    )
+  )
 }
 
-export default AddUserPopup
+export default EditStockPopup

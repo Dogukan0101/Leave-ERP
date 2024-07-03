@@ -40,8 +40,8 @@ export const Users = () => {
     const [usersShow, setUsersShow] = useState(usersArray);
 
     const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-    const openAddPopup = () => setShowPopup(true);
-    const closeAddPopup = () => setShowPopup(false);
+    const openAddPopup = () => setIsAddPopupOpen(true);
+    const closeAddPopup = () => setIsAddPopupOpen(false);
 
     const [isEditPopupOpen, setIsEditPopupOpen] = useState({ show: false, user: null });
     const openEditPopup = (user) => setIsEditPopupOpen({ show: true, user });
@@ -115,7 +115,7 @@ export const Users = () => {
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{user.id}</th>
                                         <td class="px-6 py-4">{user.fullName}</td>
                                         <td class="px-6 py-4">{user.email}</td>
-                                        <td class="px-6 py-4">{user.department}₺</td>
+                                        <td class="px-6 py-4">{user.department}</td>
                                         <td class="px-6 py-4">{user.restDay}</td>         
                                         <td class="px-6 py-4">{user.createdAt}</td>                                                                       
                                         <td class="px-6 py-4">
