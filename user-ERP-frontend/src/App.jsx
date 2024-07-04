@@ -4,9 +4,10 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import Users from './pages/Users'
+import { SideBar } from './components/SideBar'
 
 const router = createBrowserRouter(
-  createRoutesFromElements(<Route index element={<Users/>}/>)
+  createRoutesFromElements(<Route path='/employees' element={<Users/>}/>)
 );
 
 const App = () => {

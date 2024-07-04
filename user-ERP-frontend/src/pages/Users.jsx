@@ -5,6 +5,7 @@ import { SearchBar } from '../components/SearchBar';
 import { InsertButton } from '../components/InsertButton';
 import AddUserPopup from './AddUserPopup';
 import EditUserPopup from './EditUserPopup';
+import { SideBar } from '../components/SideBar';
 
 
 export const Users = () => {
@@ -67,8 +68,9 @@ export const Users = () => {
 
     return (
         <div>
-            <div class="p-4">
-                <div class="p-2 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+            <SideBar/>
+            <div class="p-4 sm:ml-64">
+                <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
                     <div class='flex flex-row w-6/6 mb-3'>
                         <SearchBar searchButtonSubmit={searchButtonSubmit} class='mr-auto'></SearchBar>
                         <InsertButton description="Add new Employee" onClick={openAddPopup} />
@@ -91,7 +93,7 @@ export const Users = () => {
                                         Department
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Rest Day
+                                        Leave Days
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Works Since
