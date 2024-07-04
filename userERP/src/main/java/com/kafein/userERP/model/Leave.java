@@ -5,33 +5,24 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.Date;
 
 @Entity
-@Table(name = "Employees")
 @Data
-public class User {
-
+@Table(name = "Leaves")
+public class Leave {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fullName;
+    private Date startDate;
 
-    @Column(unique = true)
-    private String email;
-
-    private String department;
-    private Long restDay;
+    private Date endDate;
 
     @CreationTimestamp
     private Timestamp createdAt;
 
-    @OneToMany(mappedBy = "user")
-    private List<Leave> leaves;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }
-
-
-
-
-
