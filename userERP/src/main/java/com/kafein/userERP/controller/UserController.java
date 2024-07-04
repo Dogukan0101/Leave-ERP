@@ -52,5 +52,16 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
+    @CrossOrigin
+    @DeleteMapping("/deleteUserById")
+    public ResponseEntity<Void> updateUserById(@RequestParam Long userId){
+        try {
+            userService.deleteUserById(userId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok().build();
+    }
+
 
 }

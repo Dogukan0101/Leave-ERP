@@ -50,4 +50,20 @@ public class UserService {
         userRepository.save(existingUser);
     }
 
+    @Transactional
+    public void deleteUserById(Long userId){
+
+        Optional<User> existingUserCheck = userRepository.findById(userId);
+
+        if(existingUserCheck.isEmpty()){
+            throw new IllegalArgumentException("User with id" + userId + "is not found.");
+        }
+
+        User existingUser = existingUserCheck.get();
+
+        userRepository.deleteById(existingUser.getId());
+    }
+
+
+
 }
