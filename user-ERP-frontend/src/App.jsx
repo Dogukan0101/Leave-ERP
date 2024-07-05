@@ -1,13 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import Users from './pages/Users'
-import { SideBar } from './components/SideBar'
+import Leaves from './pages/Leaves'
+import MainLayout from './layouts/MainLayout';
 
 const router = createBrowserRouter(
-  createRoutesFromElements(<Route path='/employees' element={<Users/>}/>)
+  createRoutesFromElements(
+    <Route path='/' element={<MainLayout/>}>  
+      <Route path='/employees' element={<Users/>}/>
+      <Route path='/leaves' element={<Leaves/>}/>
+    </Route>
+)
 );
 
 const App = () => {

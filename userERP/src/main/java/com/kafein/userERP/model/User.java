@@ -1,5 +1,6 @@
 package com.kafein.userERP.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,13 +23,16 @@ public class User {
     private String email;
 
     private String department;
+
     private Long restDay;
 
     @CreationTimestamp
     private Timestamp createdAt;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Leave> leaves;
+
 }
 
 
