@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { SearchBar } from "../components/SearchBar";
 import { SideBar } from "../components/SideBar";
 
+
 export const Leaves = () => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,6 +31,7 @@ export const Leaves = () => {
     } catch (error) {
       console.log(error.message);
     }
+
   };
 
   useEffect(() => {
@@ -38,14 +40,8 @@ export const Leaves = () => {
 
   const [leavesShow, setLeavesShow] = useState(leavesArray);
 
-  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-  const openAddPopup = () => setIsAddPopupOpen(true);
-  const closeAddPopup = () => setIsAddPopupOpen(false);
-
   const [isEditPopupOpen, setIsEditPopupOpen] = useState({show: false, leave: null});
-
   const openEditPopup = (leave) => setIsEditPopupOpen({ show: true, leave: leave });
-
   const closeEditPopup = () => setIsEditPopupOpen({ show: false, leave: null });
 
   const searchButtonSubmit = (keyword) => {
@@ -60,7 +56,7 @@ export const Leaves = () => {
     setLeavesShow(newArr);
   };
 
-  if (isEditPopupOpen.show || isAddPopupOpen) {
+  if (isEditPopupOpen.show) {
     document.body.classList.add("overflow-hidden");
   } else {
     document.body.classList.remove("overflow-hidden");
@@ -112,7 +108,9 @@ export const Leaves = () => {
                       {leave.id}
                     </th>
                     <td class="px-6 py-4">{leave.userName}</td>
-                    <td class="px-6 py-4">{leave.startDate}</td>
+                    <td class="px-6 py-4">{
+                    leave.startDate
+                    }</td>
                     <td class="px-6 py-4">{leave.endDate}</td>
                     <td class="px-6 py-4">{leave.createdAt}</td>
                     <td class="px-6 py-4">

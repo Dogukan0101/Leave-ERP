@@ -6,6 +6,7 @@ import { InsertButton } from '../components/InsertButton';
 import AddUserPopup from './AddUserPopup';
 import EditUserPopup from './EditUserPopup';
 import { SideBar } from '../components/SideBar';
+import AddLeavePopup from './AddLeavePopup';
 
 
 export const Users = () => {
@@ -46,6 +47,10 @@ export const Users = () => {
     const [isEditPopupOpen, setIsEditPopupOpen] = useState({ show: false, user: null });
     const openEditPopup = (userA) => setIsEditPopupOpen({ show: true, user:userA });
     const closeEditPopup = () => setIsEditPopupOpen({ show: false, user: null });
+
+    const [isCreateLeavePopupOpen, setIsCreateLeavePopupOpen] = useState({ show: false, user: null });
+    const openCreateLeavePopup = (user) => setIsCreateLeavePopupOpen({ show: true, user:user });
+    const closeCreateLeavePopup = () => setIsCreateLeavePopupOpen({ show: false, user: null });   
 
     const searchButtonSubmit = (keyword) => {
         if (keyword == ''){
@@ -112,6 +117,12 @@ export const Users = () => {
                                     <EditUserPopup closePopup={closeEditPopup}
                                         user={isEditPopupOpen.user}
                                     />
+                                }  
+
+                                {isCreateLeavePopupOpen.show && isCreateLeavePopupOpen.user &&
+                                    <AddLeavePopup closePopup={closeCreateLeavePopup}
+                                        user={isCreateLeavePopupOpen.user}
+                                    />
                                 }         
 
                                 {usersShow.map((user, index) => (
@@ -122,7 +133,9 @@ export const Users = () => {
                                         <td class="px-6 py-4">{user.fullName}</td>
                                         <td class="px-6 py-4">{user.email}</td>
                                         <td class="px-6 py-4">{user.department}</td>
-                                        <td class="px-6 py-4">{user.restDay}</td>         
+                                        <td class="px-6 py-4">
+                                            <div onClick={() => openCreateLeavePopup(user)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">{user.restDay}</div>
+                                        </td>         
                                         <td class="px-6 py-4">{user.createdAt}</td>                                                                       
                                         <td class="px-6 py-4">
                                             <div onClick={() => openEditPopup(user)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">Edit</div>

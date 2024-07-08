@@ -43,6 +43,7 @@ public class LeaveService {
 
         Leave leave = new Leave();
 
+        leave.setDays(leaveRequest.getDays());
         leave.setStartDate(leaveRequest.getStartDate());
         leave.setEndDate(leaveRequest.getEndDate());
         leave.setUser(leaveRequest.getUser());

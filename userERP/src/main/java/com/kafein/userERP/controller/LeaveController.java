@@ -40,6 +40,7 @@ public class LeaveController {
         }
     }
 
+    @CrossOrigin
     @PostMapping("/createLeave")
     public ResponseEntity<Leave> createLeave(@RequestBody Leave leaveRequest){
         try {
