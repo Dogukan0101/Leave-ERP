@@ -23,7 +23,9 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    private String department;
+    @ManyToOne
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
+    private Department department;
 
     private Long restDay;
 

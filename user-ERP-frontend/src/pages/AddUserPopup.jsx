@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import styled from 'styled-components';
 
+
+const StyledSelect = styled.select`
+  appearance: none;
+  borders: none;
+`;
 
 const AddUserPopup = ({ closePopup }) => {
 
@@ -7,17 +13,40 @@ const AddUserPopup = ({ closePopup }) => {
 
     const [fullName, setFullName] = useState('')
     const [email,setEmail]= useState('')
-    const [department,setDepartment]= useState('')
+
+    const [departmentOptions, setDepartmentOptions] = useState([]);
+
+    const [department,setDepartment]= useState(departmentOptions[0])
+
+    const fetchDepartmentsSelections = async () => {
+        try {
+          const response = await fetch("http://localhost:8080/departments/getAllDepartmentsForOptions", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+    
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+    
+          const data = await response.json();
+    
+          setDepartmentOptions(data);
+        } catch (error) {
+          console.log(error.message);
+        }
+      };
 
 
     const onSubmitFunction = async (event) => {
-
         event.preventDefault();
         
         const userData = {
           fullName: fullName,
           email: email,
-          department: department,
+          departmentName: department, // Department needs to be set correctly!!
           restDay: 15
         };
     
@@ -43,6 +72,9 @@ const AddUserPopup = ({ closePopup }) => {
         window.location.reload();
       };
 
+      useEffect(() => {
+        fetchDepartmentsSelections();
+      }, []);
 
     return (
         <div id="crud-modal" tabindex="-1" aria-hidden="true" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 bottom-0 z-50 flex justify-center items-center bg-gray-800/50">
@@ -98,16 +130,19 @@ const AddUserPopup = ({ closePopup }) => {
                         </div>
 
                         <div className="grid gap-4 mb-4 ">
-                            <label>
+                            <label> 
                                 Department
                             </label>
-                            <input
-                                type='text'
-                                onChange={(event) => setDepartment(event.target.value)}
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter the Department:"
-                                required
-                            />
+                            <StyledSelect
+                              value={department}
+                              onChange={(event) =>
+                                setDepartment(event.target.value)
+                              }
+                            >
+                              {departmentOptions.map((option) => (
+                                <option value={option}>{option}</option>
+                              ))}
+                            </StyledSelect>
 
                         </div>
                         

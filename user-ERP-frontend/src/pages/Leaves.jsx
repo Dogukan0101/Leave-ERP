@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { SearchBar } from "../components/SearchBar";
 import { SideBar } from "../components/SideBar";
 
-
 export const Leaves = () => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,7 +30,6 @@ export const Leaves = () => {
     } catch (error) {
       console.log(error.message);
     }
-
   };
 
   useEffect(() => {
@@ -40,8 +38,12 @@ export const Leaves = () => {
 
   const [leavesShow, setLeavesShow] = useState(leavesArray);
 
-  const [isEditPopupOpen, setIsEditPopupOpen] = useState({show: false, leave: null});
-  const openEditPopup = (leave) => setIsEditPopupOpen({ show: true, leave: leave });
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState({
+    show: false,
+    leave: null,
+  });
+  const openEditPopup = (leave) =>
+    setIsEditPopupOpen({ show: true, leave: leave });
   const closeEditPopup = () => setIsEditPopupOpen({ show: false, leave: null });
 
   const searchButtonSubmit = (keyword) => {
@@ -108,9 +110,7 @@ export const Leaves = () => {
                       {leave.id}
                     </th>
                     <td class="px-6 py-4">{leave.userName}</td>
-                    <td class="px-6 py-4">{
-                    leave.startDate
-                    }</td>
+                    <td class="px-6 py-4">{leave.startDate}</td>
                     <td class="px-6 py-4">{leave.endDate}</td>
                     <td class="px-6 py-4">{leave.createdAt}</td>
                     <td class="px-6 py-4">

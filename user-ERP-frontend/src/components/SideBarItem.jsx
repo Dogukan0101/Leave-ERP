@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAddressCard, faArrowAltCircleDown, faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { faAddressCard, faArrowAltCircleDown, faCalendar, faNetworkWired } from '@fortawesome/free-solid-svg-icons';
 import { faUserTie } from '@fortawesome/free-solid-svg-icons';
 
 const text_color = "text-gray-200";
@@ -16,6 +16,10 @@ class SVG {
 
     static leaves = (
         <FontAwesomeIcon icon={faCalendar} />
+    );
+
+    static departments = (
+        <FontAwesomeIcon icon={faNetworkWired} />
     );
 }
 

@@ -1,6 +1,7 @@
 package com.kafein.userERP.service;
 
 import com.kafein.userERP.model.User;
+import com.kafein.userERP.repository.DepartmentRepository;
 import com.kafein.userERP.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,10 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     public User createUser(User userRequest){
 

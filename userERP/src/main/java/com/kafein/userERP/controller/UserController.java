@@ -14,7 +14,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @CrossOrigin
     @GetMapping("/getAllUsers")
@@ -27,9 +27,7 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.noContent().build();
         }
-    }
-
-    ;
+    };
 
     @CrossOrigin
     @PostMapping("/createUser")
@@ -54,7 +52,7 @@ public class UserController {
 
     @CrossOrigin
     @DeleteMapping("/deleteUserById")
-    public ResponseEntity<Void> updateUserById(@RequestParam Long userId){
+    public ResponseEntity<Void> deleteUserById(@RequestParam Long userId){
         try {
             userService.deleteUserById(userId);
         } catch (Exception e) {
