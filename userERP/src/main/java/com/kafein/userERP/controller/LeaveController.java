@@ -42,13 +42,14 @@ public class LeaveController {
 
     @CrossOrigin
     @PostMapping("/createLeave")
-    public ResponseEntity<Leave> createLeave(@RequestBody Leave leaveRequest){
+    public ResponseEntity<Void> createLeave(@RequestBody Leave leaveRequest){
         try {
-            return ResponseEntity.ok(leaveService.createLeave(leaveRequest));
+            leaveService.createLeave(leaveRequest);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-    }
+        return ResponseEntity.ok().build();
+    };
 
 
 }

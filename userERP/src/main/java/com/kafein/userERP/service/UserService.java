@@ -68,6 +68,14 @@ public class UserService {
         userRepository.deleteById(existingUser.getId());
     }
 
+    public User findUserById(Long userId){
+        Optional<User> existingUserCheck = userRepository.findById(userId);
+
+        if(existingUserCheck.isEmpty()){
+            throw new IllegalArgumentException("User with id" + userId + "is not found.");
+        }
+        return existingUserCheck.get();
+    }
 
 
 }

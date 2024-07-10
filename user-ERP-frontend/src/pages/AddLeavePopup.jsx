@@ -31,14 +31,6 @@ const AddLeavePopup = ({ closePopup, user }) => {
       },
     };
 
-    const userData = {
-      id: user.id,
-      fullName: user.fullName,
-      email: user.email,
-      restDay: parseFloat(user.restDay - diffInDays),
-      department: user.department,
-    };
-
     try {
       const response = await fetch("http://localhost:8080/leaves/createLeave", {
         method: "POST",
@@ -48,31 +40,21 @@ const AddLeavePopup = ({ closePopup, user }) => {
         body: JSON.stringify(leaveData),
       });
 
-      const response2 = await fetch("http://localhost:8080/users/updateUserById", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userData),
-        }
-      );
 
-      if (!response.ok && !response2.ok) {
+      if (!response.ok) {
         throw new Error(
-          `HTTP error! status: ${response.status} ${response2.status}`
+          `HTTP error! status: ${response.status}`
         );
       }
 
       const result = await response.json();
-      const result2 = await response2.json();
 
       console.log("Success 1:", result);
-      console.log("Success 2:", result2);
     } catch (error) {
       console.error("Error:", error);
     }
 
-    window.location.reload();
+   window.location.reload();
   };
 
   return (

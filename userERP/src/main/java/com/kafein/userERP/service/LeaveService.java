@@ -2,7 +2,9 @@ package com.kafein.userERP.service;
 
 import com.kafein.userERP.dtos.LeaveDTO;
 import com.kafein.userERP.model.Leave;
+import com.kafein.userERP.model.User;
 import com.kafein.userERP.repository.LeaveRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ public class LeaveService {
 
     @Autowired
     private LeaveRepository leaveRepository;
+
+    @Autowired
+    private UserService userService;
 
     public List<Leave> getAllLeaves(){
         return leaveRepository.findAll();
@@ -39,7 +44,8 @@ public class LeaveService {
         return leaveDTOS;
     }
 
-    public Leave createLeave(Leave leaveRequest){
+    @Transactional
+    public void createLeave(Leave leaveRequest){
 
         Leave leave = new Leave();
 
@@ -48,7 +54,14 @@ public class LeaveService {
         leave.setEndDate(leaveRequest.getEndDate());
         leave.setUser(leaveRequest.getUser());
 
-        return leaveRepository.save(leave);
+        leaveRepository.save(leave);
+
+        User user = userService.findUserById(leaveRequest.getUser().getId());
+        Long daysOfRest = user.getRestDay() - leaveRequest.getDays();
+        user.setRestDay(daysOfRest);
+
+        userService.updateUserById(user.getId(), user);
+
     }
 
 }
