@@ -1,5 +1,6 @@
 package com.kafein.userERP.service;
 
+import com.kafein.userERP.dtos.DepartmentOptionsDTO;
 import com.kafein.userERP.model.Department;
 import com.kafein.userERP.repository.DepartmentRepository;
 import jakarta.transaction.Transactional;
@@ -27,8 +28,8 @@ public class DepartmentService {
         return departmentRepository.findAll();
     }
 
-    public List<String> getAllDepartmentsForOptions(){
-        return departmentRepository.findAllDepartmentNames();
+    public List<DepartmentOptionsDTO> getAllDepartmentsForOptions(){
+        return departmentRepository.getAllDepartmentOptions();
     }
 
     @Transactional

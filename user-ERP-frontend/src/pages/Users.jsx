@@ -132,7 +132,7 @@ export const Users = () => {
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{user.id}</th>
                                         <td class="px-6 py-4">{user.fullName}</td>
                                         <td class="px-6 py-4">{user.email}</td>
-                                        <td class="px-6 py-4">{user.department}</td>
+                                        <td class="px-6 py-4">{user.department.name}</td>
                                         <td class="px-6 py-4">
                                             <div onClick={() => openCreateLeavePopup(user)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">{user.restDay}</div>
                                         </td>         

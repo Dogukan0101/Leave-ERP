@@ -1,5 +1,6 @@
 package com.kafein.userERP.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,6 +21,7 @@ public class Department {
     private int numOfEmployees;
 
     @OneToMany(mappedBy = "department")
+    @JsonIgnore
     private List<User> users;
 
 }

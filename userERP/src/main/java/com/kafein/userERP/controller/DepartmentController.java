@@ -1,5 +1,6 @@
 package com.kafein.userERP.controller;
 
+import com.kafein.userERP.dtos.DepartmentOptionsDTO;
 import com.kafein.userERP.model.Department;
 import com.kafein.userERP.model.User;
 import com.kafein.userERP.service.DepartmentService;
@@ -32,9 +33,10 @@ public class DepartmentController {
 
     @CrossOrigin
     @GetMapping("/getAllDepartmentsForOptions")
-    public ResponseEntity<List<String>> getAllDepartmentsForOptions() {
+    public ResponseEntity<List<DepartmentOptionsDTO>> getAllDepartmentsForOptions() {
 
-        List<String> departments = departmentService.getAllDepartmentsForOptions();
+        List<DepartmentOptionsDTO> departments = departmentService
+                .getAllDepartmentsForOptions();
 
         try {
             return ResponseEntity.ok(departments);
