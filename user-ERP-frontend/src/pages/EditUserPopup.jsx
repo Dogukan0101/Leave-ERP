@@ -17,7 +17,7 @@ const EditUserPopup = ({ closePopup, user }) => {
 
   const [departmentOptions, setDepartmentOptions] = useState([]);
 
-  const [departmentId, setDepartmentId] = useState("");
+  const [departmentId, setDepartmentId] = useState(user.department.id);
 
   const fetchDepartmentsSelections = async () => {
     try {
@@ -39,9 +39,6 @@ const EditUserPopup = ({ closePopup, user }) => {
 
       setDepartmentOptions(data);
 
-      if (data.length > 0) {
-        setDepartmentId(data[0].id);
-      }
     } catch (error) {
       console.log(error.message);
     }
@@ -142,6 +139,7 @@ const EditUserPopup = ({ closePopup, user }) => {
       aria-hidden="true"
       class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 bottom-0 z-50 flex justify-center items-center bg-gray-800/50"
     >
+      {console.log(user.department.id)}
       <div class="relative p-4 w-full max-w-md max-h-full">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
           <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
