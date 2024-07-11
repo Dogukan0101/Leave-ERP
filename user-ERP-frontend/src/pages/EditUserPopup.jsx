@@ -1,12 +1,56 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import styled from "styled-components";
+
+const StyledSelect = styled.select`
+  appearance: none;
+  borders: none;
+`;
 
 const EditUserPopup = ({ closePopup, user }) => {
   const [fullName, setFullName] = useState(user.fullName);
+
   const [email, setEmail] = useState(user.email);
+
   const [restDay, setRestDay] = useState(user.restDay);
-  const [department, setDepartment] = useState(user.department);
+
+  const [departmentOptions, setDepartmentOptions] = useState([]);
+
+  const [departmentId, setDepartmentId] = useState("");
+
+  const fetchDepartmentsSelections = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/departments/getAllDepartmentsForOptions",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      setDepartmentOptions(data);
+
+      if (data.length > 0) {
+        setDepartmentId(data[0].id);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleDepartmentChange = (event) => {
+    setDepartmentId(event.target.value);
+  };
+
 
   const handleSubmitUser = async (event) => {
     event.preventDefault();
@@ -16,7 +60,9 @@ const EditUserPopup = ({ closePopup, user }) => {
       fullName: fullName,
       email: email,
       restDay: parseFloat(restDay),
-      department: department,
+      department: {
+        id:departmentId
+      },
     };
 
     try {
@@ -50,9 +96,10 @@ const EditUserPopup = ({ closePopup, user }) => {
     window.location.reload();
   };
 
+
   const handleDeleteUser = async (event) => {
     event.preventDefault();
-    
+
     const confirmDelete = window.confirm(
       "Are you sure you want to delete the user?"
     );
@@ -64,12 +111,11 @@ const EditUserPopup = ({ closePopup, user }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/users/deleteUserById?userId=" +
-          user.id,
+        "http://localhost:8080/users/deleteUserById?userId=" + user.id,
         {
           method: "DELETE",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
         }
       );
@@ -84,6 +130,10 @@ const EditUserPopup = ({ closePopup, user }) => {
       toast.error("An error occurred while deleting the user.");
     }
   };
+
+  useEffect(() => {
+    fetchDepartmentsSelections();
+  }, []);
 
   return (
     <div
@@ -160,13 +210,16 @@ const EditUserPopup = ({ closePopup, user }) => {
 
             <div className="grid gap-4 mb-4 ">
               <label>Department</label>
-              <input
-                type="text"
-                onChange={(event) => setDepartment(event.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                value={department}
-                required
-              />
+              <StyledSelect
+                value={departmentId}
+                onChange={handleDepartmentChange}
+              >
+                {departmentOptions.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.name}
+                  </option>
+                ))}
+              </StyledSelect>
             </div>
 
             <div className="flex flex-row justify-between">
