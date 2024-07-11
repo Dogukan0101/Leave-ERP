@@ -46,6 +46,17 @@ public class DepartmentController {
     };
 
     @CrossOrigin
+    @GetMapping("/calculateDepartment")
+    public ResponseEntity<Void> calculateDepartment() {
+        try {
+            departmentService.calculateDepartmentEmployeeNumber();
+        } catch (Exception e) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().build();
+    };
+
+    @CrossOrigin
     @PostMapping("/createDepartment")
     public ResponseEntity<Department> createDepartment(@RequestBody Department departmentRequest) {
         try {
@@ -65,5 +76,7 @@ public class DepartmentController {
         }
         return ResponseEntity.ok().build();
     }
+
+
 
 }

@@ -58,8 +58,6 @@ const AddUserPopup = ({ closePopup }) => {
       }
     };
 
-    console.log(userData)
-
     try {
       const response = await fetch("http://localhost:8080/users/createUser", {
         method: "POST",

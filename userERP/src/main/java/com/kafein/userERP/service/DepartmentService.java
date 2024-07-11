@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -61,4 +62,25 @@ public class DepartmentService {
 
         departmentRepository.deleteById(existingDepartment.getId());
     }
+
+    public void calculateDepartmentEmployeeNumber(){
+        List<Object[]> results = departmentRepository.getDepartmentEmployeeCounts();
+
+        for(Object[] result: results){
+
+            Long departmentId = (Long) result[0];
+            Long employeeNumber = (Long) result[1];
+
+            Optional<Department> departmentCheck = departmentRepository.findById(departmentId);
+            if(departmentCheck.isEmpty()){
+                throw new NoSuchElementException("Department with id " + departmentId + " is not found.");
+            }
+            Department department = departmentCheck.get();
+            department.setNumOfEmployees(employeeNumber.intValue());
+
+            departmentRepository.save(department);
+        }
+    }
+
+
 }

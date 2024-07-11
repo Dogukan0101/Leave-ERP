@@ -1,5 +1,6 @@
 package com.kafein.userERP.service;
 
+import com.kafein.userERP.model.Department;
 import com.kafein.userERP.model.User;
 import com.kafein.userERP.repository.DepartmentRepository;
 import com.kafein.userERP.repository.UserRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -17,8 +19,9 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private DepartmentRepository departmentRepository;
+    private DepartmentService departmentService;
 
+    @Transactional
     public User createUser(User userRequest){
 
         User newUser = new User();
@@ -28,7 +31,10 @@ public class UserService {
         newUser.setDepartment(userRequest.getDepartment());
         newUser.setRestDay(userRequest.getRestDay());
 
-        return userRepository.save(newUser);
+        userRepository.save(newUser);
+        departmentService.calculateDepartmentEmployeeNumber();
+
+        return newUser;
     }
 
     public List<User> getAllUsers(){
@@ -49,15 +55,24 @@ public class UserService {
         existingUser.setFullName(updatedUser.getFullName());
         existingUser.setEmail(updatedUser.getEmail());
         existingUser.setRestDay(updatedUser.getRestDay());
+
+        Long oldDepartment = existingUser.getDepartment().getId();
+        Long newDepartment = updatedUser.getDepartment().getId();
+        boolean areDepartmentsSame = oldDepartment.equals(newDepartment);
+
         existingUser.setDepartment(updatedUser.getDepartment());
 
         userRepository.save(existingUser);
+
+        if(!areDepartmentsSame){
+            departmentService.calculateDepartmentEmployeeNumber();
+        }
     }
 
     @Transactional
     public void deleteUserById(Long userId){
 
-        Optional<User> existingUserCheck = userRepository.findById(userId);
+        Optional<User> existingUserCheck = userRepository.findUserById(userId);
 
         if(existingUserCheck.isEmpty()){
             throw new IllegalArgumentException("User with id" + userId + "is not found.");
@@ -65,7 +80,9 @@ public class UserService {
 
         User existingUser = existingUserCheck.get();
 
-        userRepository.deleteById(existingUser.getId());
+        userRepository.deleteUserById(existingUser.getId());
+
+        departmentService.calculateDepartmentEmployeeNumber();
     }
 
     public User findUserById(Long userId){
