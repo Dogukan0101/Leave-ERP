@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { SearchBar } from "../components/SearchBar";
 import { SideBar } from "../components/SideBar";
+import EditLeavePopup from "./EditLeavePopup";
 
 export const Leaves = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -98,6 +99,12 @@ export const Leaves = () => {
                 </tr>
               </thead>
               <tbody>
+                {isEditPopupOpen.show && isEditPopupOpen.leave && (
+                  <EditLeavePopup
+                    closePopup={closeEditPopup}
+                    leave={isEditPopupOpen.leave}
+                  />
+                )}
                 {leavesShow.map((leave, index) => (
                   <tr
                     key={index}

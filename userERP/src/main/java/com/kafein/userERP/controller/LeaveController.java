@@ -4,6 +4,7 @@ import com.kafein.userERP.dtos.LeaveDTO;
 import com.kafein.userERP.model.Leave;
 import com.kafein.userERP.service.LeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,5 +52,15 @@ public class LeaveController {
         return ResponseEntity.ok().build();
     };
 
+    @CrossOrigin
+    @DeleteMapping("/deleteLeaveById")
+    public ResponseEntity<Void> deleteLeaveById(@RequestParam Long leaveId){
+        try {
+            leaveService.deleteLeaveById(leaveId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok().build();
+    }
 
 }

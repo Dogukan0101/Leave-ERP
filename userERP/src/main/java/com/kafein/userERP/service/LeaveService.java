@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class LeaveService {
@@ -19,6 +21,15 @@ public class LeaveService {
 
     @Autowired
     private UserService userService;
+
+    public LeaveDTO findLeaveById(Long leaveId){
+
+        Optional<LeaveDTO> existingLeaveCheck = leaveRepository.findLeaveById(leaveId);
+        if(existingLeaveCheck.isEmpty()){
+            throw new NoSuchElementException("Leave with id " + leaveId + " is not found.");
+        }
+        return existingLeaveCheck.get();
+    }
 
     public List<Leave> getAllLeaves(){
         return leaveRepository.findAll();
@@ -62,6 +73,28 @@ public class LeaveService {
 
         userService.updateUserById(user.getId(), user);
 
+    }
+
+    @Transactional
+    public void deleteLeaveById(Long leaveId){
+
+        Optional<LeaveDTO> existingLeaveCheck = leaveRepository.findLeaveById(leaveId);
+
+        if(existingLeaveCheck.isEmpty()){
+            throw new NoSuchElementException("Leave with id " + leaveId + " is not found." );
+        }
+
+        LeaveDTO existingLeave = existingLeaveCheck.get();
+
+        User user = userService.findUserById(existingLeave.getUserId());
+
+        Long currentLeave = user.getRestDay() + existingLeave.getDays();
+
+        user.setRestDay(currentLeave);
+
+        userService.updateUserById(user.getId(),user);
+
+        leaveRepository.deleteLeaveById(leaveId);
     }
 
 }
