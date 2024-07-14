@@ -72,12 +72,35 @@ public class LeaveService {
         leaveRepository.deleteLeaveById(existingLeave.getId());
     }
 
+
     @Transactional
     public void updateLeaveById(Long leaveId, Leave updatedLeave){
 
+        Optional<Leave> existingLeaveCheck = leaveRepository.findById(leaveId);
 
+        if(existingLeaveCheck.isEmpty()){
+            throw new NoSuchElementException("Leave with id " + leaveId + " is not found.");
+        }
 
+        Leave existingLeave = existingLeaveCheck.get();
+
+        User existingUser = userService.findUserById(existingLeave.getUser().getId());
+
+        Long currentRestDay = existingUser.getRestDay() + existingLeave.getDays() - updatedLeave.getDays();
+        existingUser.setRestDay(currentRestDay);
+
+        existingLeave.setStartDate(updatedLeave.getStartDate());
+        existingLeave.setEndDate(updatedLeave.getEndDate());
+        existingLeave.setDays(updatedLeave.getDays());
+
+        leaveRepository.save(existingLeave);
+        userService.updateUserById(existingUser.getId(),existingUser);
     }
 
 
 }
+
+
+
+
+

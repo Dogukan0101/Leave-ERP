@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 
-
 const EditLeavePopup = ({ closePopup, leave }) => {
   const [leaveStart, setLeaveStart] = useState(new Date(leave.startDate));
 
@@ -36,14 +35,14 @@ const EditLeavePopup = ({ closePopup, leave }) => {
     }
   };
 
-  const handleSubmitLeave = async (event) => {
+  const handleUpdateLeave = async (event) => {
     event.preventDefault();
 
     let diffInDays = Math.round(
       (leaveEnd.getTime() - leaveStart.getTime()) / (1000 * 3600 * 24)
     );
-
-    if (user.restDay + leave.days >= diffInDays) {
+3
+    if (user.restDay + leave.days < diffInDays) {
       toast.info("The user do not have enough leave days.");
       return;
     }
@@ -60,7 +59,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/users/updateLeaveById",
+        "http://localhost:8080/leaves/updateLeaveById",
         {
           method: "POST",
           headers: {
@@ -81,7 +80,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
       console.error("Error:", error);
     }
 
-    //window.location.reload();
+    window.location.reload();
   };
 
   const handleDeleteLeave = async (event) => {
@@ -189,7 +188,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
 
             <div className="flex flex-row justify-between">
               <button
-                onClick={(event) => handleSubmitLeave(event)}
+                onClick={(event) => handleUpdateLeave(event)}
                 type="submit"
                 className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >

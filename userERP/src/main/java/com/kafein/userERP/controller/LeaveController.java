@@ -41,6 +41,17 @@ public class LeaveController {
     };
 
     @CrossOrigin
+    @PostMapping("/updateLeaveById")
+    public ResponseEntity<Void> updateLeaveById(@RequestBody Leave leaveRequest){
+        try {
+            leaveService.updateLeaveById(leaveRequest.getId(),leaveRequest);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    };
+
+    @CrossOrigin
     @DeleteMapping("/deleteLeaveById")
     public ResponseEntity<Void> deleteLeaveById(@RequestParam Long leaveId){
         try {
