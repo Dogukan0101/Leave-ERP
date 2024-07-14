@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 
+
 const EditLeavePopup = ({ closePopup, leave }) => {
   const [leaveStart, setLeaveStart] = useState(new Date(leave.startDate));
 
@@ -14,7 +15,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
   const fetchUserById = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/users/findUserById",
+        "http://localhost:8080/users/findUserById?userId=" + leave.user.id,
         {
           method: "GET",
           headers: {
@@ -28,7 +29,6 @@ const EditLeavePopup = ({ closePopup, leave }) => {
       }
 
       const data = await response.json();
-
       setUser(data);
 
     } catch (error) {
@@ -98,7 +98,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/users/deleteLeaveById?leaveId=" + leave.id,
+        "http://localhost:8080/leaves/deleteLeaveById?leaveId=" + leave.id,
         {
           method: "DELETE",
           headers: {
@@ -111,7 +111,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      toast.success("The user is deleted successfully!");
+      toast.success("The leave is deleted successfully!");
       window.location.reload();
     } catch (error) {
       toast.error("An error occurred while deleting the user.");
@@ -129,7 +129,6 @@ const EditLeavePopup = ({ closePopup, leave }) => {
       aria-hidden="true"
       class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 bottom-0 z-50 flex justify-center items-center bg-gray-800/50"
     >
-        {console.log(leaveStart + " " +  leaveEnd)}
       <div class="relative p-4 w-full max-w-md max-h-full">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
           <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
@@ -166,8 +165,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
             <div className="grid gap-4 mb-4 ">
               <label>Start Date</label>
               <Datepicker
-                defaultDate={leaveStart}
-                minDate={new Date()}
+                value={leaveStart}
                 maxDate={new Date(leaveEnd.getTime() - 24 * 60 * 60 * 1000)}
                 onSelectedDateChanged={(date) => {
                   setLeaveStart(date);
@@ -178,7 +176,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
             <div className="grid gap-4 mb-4 ">
               <label>End Date</label>
               <Datepicker
-                defaultDate={leaveEnd}
+                value={leaveEnd}
                 minDate={new Date(leaveStart.getTime() + 24 * 60 * 60 * 1000)}
                 maxDate={
                   new Date(leaveEnd.getTime() + 24 * 60 * 60 * 1000 * 365)

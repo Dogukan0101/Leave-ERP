@@ -1,6 +1,5 @@
 package com.kafein.userERP.service;
 
-import com.kafein.userERP.dtos.LeaveDTO;
 import com.kafein.userERP.model.Leave;
 import com.kafein.userERP.model.User;
 import com.kafein.userERP.repository.LeaveRepository;
@@ -22,37 +21,19 @@ public class LeaveService {
     @Autowired
     private UserService userService;
 
-    public LeaveDTO findLeaveById(Long leaveId){
+    public Leave findLeaveById(Long leaveId){
 
-        Optional<LeaveDTO> existingLeaveCheck = leaveRepository.findLeaveById(leaveId);
+        Optional<Leave> existingLeaveCheck = leaveRepository.findById(leaveId);
+
         if(existingLeaveCheck.isEmpty()){
             throw new NoSuchElementException("Leave with id " + leaveId + " is not found.");
         }
+
         return existingLeaveCheck.get();
     }
 
     public List<Leave> getAllLeaves(){
         return leaveRepository.findAll();
-    }
-
-    public List<LeaveDTO> getAllLeavesWithoutUserDetails(){
-
-        List<Leave> leaves = leaveRepository.findAll();
-        List<LeaveDTO> leaveDTOS = new ArrayList<LeaveDTO>();
-
-        for(Leave leave : leaves){
-            LeaveDTO leaveDTO = new LeaveDTO();
-
-            leaveDTO.setId(leave.getId());
-            leaveDTO.setStartDate(leave.getStartDate());
-            leaveDTO.setEndDate(leave.getEndDate());
-            leaveDTO.setCreatedAt(leave.getCreatedAt());
-            leaveDTO.setUserId(leave.getUser().getId());
-            leaveDTO.setUserName(leave.getUser().getFullName());
-
-            leaveDTOS.add(leaveDTO);
-        }
-        return leaveDTOS;
     }
 
     @Transactional
@@ -78,23 +59,25 @@ public class LeaveService {
     @Transactional
     public void deleteLeaveById(Long leaveId){
 
-        Optional<LeaveDTO> existingLeaveCheck = leaveRepository.findLeaveById(leaveId);
+        Leave existingLeave = findLeaveById(leaveId);
 
-        if(existingLeaveCheck.isEmpty()){
-            throw new NoSuchElementException("Leave with id " + leaveId + " is not found." );
-        }
+        User user = userService.findUserById(existingLeave.getUser().getId());
 
-        LeaveDTO existingLeave = existingLeaveCheck.get();
+        Long currentLeaveDays = user.getRestDay() + existingLeave.getDays();
 
-        User user = userService.findUserById(existingLeave.getUserId());
-
-        Long currentLeave = user.getRestDay() + existingLeave.getDays();
-
-        user.setRestDay(currentLeave);
+        user.setRestDay(currentLeaveDays);
 
         userService.updateUserById(user.getId(),user);
 
-        leaveRepository.deleteLeaveById(leaveId);
+        leaveRepository.deleteLeaveById(existingLeave.getId());
     }
+
+    @Transactional
+    public void updateLeaveById(Long leaveId, Leave updatedLeave){
+
+
+
+    }
+
 
 }

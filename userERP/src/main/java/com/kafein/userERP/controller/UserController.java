@@ -30,6 +30,19 @@ public class UserController {
     };
 
     @CrossOrigin
+    @GetMapping("/findUserById")
+    public ResponseEntity<User> getUserById(@RequestParam Long userId) {
+
+        User user = userService.findUserById(userId);
+
+        try {
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.noContent().build();
+        }
+    };
+
+    @CrossOrigin
     @PostMapping("/createUser")
     public ResponseEntity<User> createUser(@RequestBody User userRequest) {
         try {
@@ -60,5 +73,7 @@ public class UserController {
         }
         return ResponseEntity.ok().build();
     }
+
+
 
 }

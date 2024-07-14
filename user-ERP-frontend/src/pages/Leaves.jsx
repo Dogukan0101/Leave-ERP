@@ -14,7 +14,7 @@ export const Leaves = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        "http://localhost:8080/leaves/getAllLeavesWithoutUserDetails",
+        "http://localhost:8080/leaves/getAllLeaves",
         {
           method: "GET",
           headers: {
@@ -43,6 +43,7 @@ export const Leaves = () => {
     show: false,
     leave: null,
   });
+  
   const openEditPopup = (leave) =>
     setIsEditPopupOpen({ show: true, leave: leave });
   const closeEditPopup = () => setIsEditPopupOpen({ show: false, leave: null });
@@ -54,7 +55,7 @@ export const Leaves = () => {
     }
 
     let newArr = leavesArray.filter((leave) =>
-      leave.userName.toLowerCase().includes(keyword.toLowerCase())
+      leave.user.fullName.toLowerCase().includes(keyword.toLowerCase())
     );
     setLeavesShow(newArr);
   };
@@ -68,7 +69,6 @@ export const Leaves = () => {
   return (
     <div>
       <SideBar />
-      {console.log(leavesShow)}
       <div class="p-4 sm:ml-64">
         <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
           <div class="flex flex-row w-6/6 mb-3">
@@ -94,6 +94,9 @@ export const Leaves = () => {
                     End Date
                   </th>
                   <th scope="col" class="px-6 py-3">
+                    Days
+                  </th>
+                  <th scope="col" class="px-6 py-3">
                     Created At
                   </th>
                 </tr>
@@ -116,9 +119,10 @@ export const Leaves = () => {
                     >
                       {leave.id}
                     </th>
-                    <td class="px-6 py-4">{leave.userName}</td>
+                    <td class="px-6 py-4">{leave.user.fullName}</td>
                     <td class="px-6 py-4">{leave.startDate}</td>
                     <td class="px-6 py-4">{leave.endDate}</td>
+                    <td class="px-6 py-4">{leave.days}</td>
                     <td class="px-6 py-4">{leave.createdAt}</td>
                     <td class="px-6 py-4">
                       <div

@@ -1,6 +1,5 @@
 package com.kafein.userERP.controller;
 
-import com.kafein.userERP.dtos.LeaveDTO;
 import com.kafein.userERP.model.Leave;
 import com.kafein.userERP.service.LeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +30,6 @@ public class LeaveController {
     }
 
     @CrossOrigin
-    @GetMapping("/getAllLeavesWithoutUserDetails")
-    public ResponseEntity<List<LeaveDTO>> getAllLeavesWithoutUserDetails(){
-        List<LeaveDTO> leaveDTOS = leaveService.getAllLeavesWithoutUserDetails();
-        try{
-            return ResponseEntity.ok(leaveDTOS);
-        }catch (Exception e){
-            return ResponseEntity.noContent().build();
-        }
-    }
-
-    @CrossOrigin
     @PostMapping("/createLeave")
     public ResponseEntity<Void> createLeave(@RequestBody Leave leaveRequest){
         try {
@@ -61,6 +49,18 @@ public class LeaveController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin
+    @GetMapping("/getLeaveById")
+    public ResponseEntity<Leave> getLeaveById(@RequestParam Long leaveId){
+
+        Leave leave = leaveService.findLeaveById(leaveId);
+        try{
+            return ResponseEntity.ok(leave);
+        }catch (Exception e){
+            return ResponseEntity.noContent().build();
+        }
     }
 
 }
