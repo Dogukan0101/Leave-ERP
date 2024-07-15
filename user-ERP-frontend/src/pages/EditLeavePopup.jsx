@@ -169,6 +169,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
             <div className="grid gap-4 mb-4 ">
               <label>Start Date</label>
               <Datepicker
+              defaultDate={leaveStart}
                 value={leaveStart}
                 maxDate={new Date(leaveEnd.getTime() - 24 * 60 * 60 * 1000)}
                 onSelectedDateChanged={(date) => {
@@ -180,6 +181,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
             <div className="grid gap-4 mb-4 ">
               <label>End Date</label>
               <Datepicker
+                defaultDate={leaveEnd}
                 value={leaveEnd}
                 minDate={new Date(leaveStart.getTime() + 24 * 60 * 60 * 1000)}
                 maxDate={
