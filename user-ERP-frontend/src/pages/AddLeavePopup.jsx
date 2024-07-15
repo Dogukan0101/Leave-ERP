@@ -40,6 +40,10 @@ const AddLeavePopup = ({ closePopup, user }) => {
         body: JSON.stringify(leaveData),
       });
 
+      if(response.status==400){
+        toast.warn("There is already a leave whose dates conflict with these dates!");
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(

@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -36,8 +37,25 @@ public class LeaveService {
         return leaveRepository.findAll();
     }
 
+    public boolean hasConflictingLeavesForAdd(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
+        List<Leave> conflictingLeaves = leaveRepository.
+                findConflictingLeaves(userId, startDate, endDate);
+        return !conflictingLeaves.isEmpty();
+    }
+
+    public boolean hasConflictingLeavesForUpdate(Long userId, LocalDateTime startDate, LocalDateTime endDate, Long leaveId) {
+        List<Leave> conflictingLeaves = leaveRepository.
+                findConflictingLeavesExcludingCurrent(userId, startDate, endDate, leaveId);
+        return !conflictingLeaves.isEmpty();
+    }
+
+
     @Transactional
     public void createLeave(Leave leaveRequest){
+
+        if(hasConflictingLeavesForAdd(leaveRequest.getUser().getId(),leaveRequest.getStartDate(),leaveRequest.getEndDate())){
+            throw new IllegalStateException("The leave's start and end dates violate user's other leaves.");
+        }
 
         Leave leave = new Leave();
 
@@ -80,6 +98,10 @@ public class LeaveService {
 
         if(existingLeaveCheck.isEmpty()){
             throw new NoSuchElementException("Leave with id " + leaveId + " is not found.");
+        }
+
+        if(hasConflictingLeavesForUpdate(updatedLeave.getUser().getId(),updatedLeave.getStartDate(),updatedLeave.getEndDate(),leaveId)){
+            throw new IllegalStateException("Date Conflict");
         }
 
         Leave existingLeave = existingLeaveCheck.get();

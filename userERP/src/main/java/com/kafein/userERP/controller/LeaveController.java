@@ -46,6 +46,9 @@ public class LeaveController {
         try {
             leaveService.updateLeaveById(leaveRequest.getId(),leaveRequest);
         } catch (Exception e) {
+            if("Date Conflict".equals(e.getMessage())){
+                return ResponseEntity.status(409).build();
+            }
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();

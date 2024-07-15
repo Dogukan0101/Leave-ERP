@@ -41,7 +41,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
     let diffInDays = Math.round(
       (leaveEnd.getTime() - leaveStart.getTime()) / (1000 * 3600 * 24)
     );
-3
+
     if (user.restDay + leave.days < diffInDays) {
       toast.info("The user do not have enough leave days.");
       return;
@@ -68,6 +68,11 @@ const EditLeavePopup = ({ closePopup, leave }) => {
           body: JSON.stringify(leaveData),
         }
       );
+
+      if(response.status==409){
+        toast.warn("There is already a leave whose dates conflict with these dates!");
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
