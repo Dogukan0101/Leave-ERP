@@ -28,7 +28,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
 

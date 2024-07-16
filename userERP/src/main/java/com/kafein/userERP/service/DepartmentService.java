@@ -45,7 +45,6 @@ public class DepartmentService {
         Department existingDepartment = existingDepartmentCheck.get();
 
         existingDepartment.setName(updatedDepartment.getName());
-        existingDepartment.setNumOfEmployees(updatedDepartment.getNumOfEmployees());
         departmentRepository.save(existingDepartment);
     }
 

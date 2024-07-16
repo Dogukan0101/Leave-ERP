@@ -2,6 +2,7 @@ package com.kafein.userERP.controller;
 
 import com.kafein.userERP.dtos.DepartmentOptionsDTO;
 import com.kafein.userERP.model.Department;
+import com.kafein.userERP.model.Leave;
 import com.kafein.userERP.model.User;
 import com.kafein.userERP.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,17 @@ public class DepartmentController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @CrossOrigin
+    @PostMapping("/updateDepartmentById")
+    public ResponseEntity<Void> updateDepartmentById(@RequestBody Department departmentRequest){
+        try {
+            departmentService.updateDepartmentById(departmentRequest.getId(),departmentRequest);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    };
 
     @CrossOrigin
     @DeleteMapping("/deleteDepartmentById")
