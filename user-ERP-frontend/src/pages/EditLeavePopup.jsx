@@ -171,6 +171,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
               <Datepicker
               defaultDate={leaveStart}
                 value={leaveStart}
+                minDate={new Date()}
                 maxDate={new Date(leaveEnd.getTime() - 24 * 60 * 60 * 1000)}
                 onSelectedDateChanged={(date) => {
                   setLeaveStart(date);

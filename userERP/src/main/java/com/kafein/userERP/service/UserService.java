@@ -1,15 +1,17 @@
 package com.kafein.userERP.service;
 
-import com.kafein.userERP.model.Department;
 import com.kafein.userERP.model.User;
-import com.kafein.userERP.repository.DepartmentRepository;
 import com.kafein.userERP.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -22,23 +24,41 @@ public class UserService {
     private DepartmentService departmentService;
 
     @Transactional
-    public User createUser(User userRequest){
-
+    public User createUser(User userRequest) {
         User newUser = new User();
-
         newUser.setFullName(userRequest.getFullName());
         newUser.setEmail(userRequest.getEmail());
         newUser.setDepartment(userRequest.getDepartment());
         newUser.setRestDay(userRequest.getRestDay());
 
-        userRepository.save(newUser);
+        User savedUser = userRepository.save(newUser);
+
+        //refreshUserCache(savedUser.getId());
+
         departmentService.calculateDepartmentEmployeeNumber();
 
-        return newUser;
+        return savedUser;
     }
 
+    /*
+    @CachePut(cacheNames = "users", key = "#userId")
+    public User refreshUserCache(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            throw new NoSuchElementException("User with id " + userId + " not found.");
+        }
+        return userOptional.get();
+    }
+     */
+
+    //@Cacheable(cacheNames = "users")
     public List<User> getAllUsers(){
         return userRepository.findAll();
+    }
+
+    public Page<User> getUserPage(int page){
+        Pageable pageable = PageRequest.of(page,6);
+        return userRepository.findAll(pageable);
     }
 
     @Transactional
@@ -62,12 +82,15 @@ public class UserService {
 
         existingUser.setDepartment(updatedUser.getDepartment());
 
-        userRepository.save(existingUser);
+        User savedUser = userRepository.save(existingUser);
+
+        //refreshUserCache(savedUser.getId());
 
         if(!areDepartmentsSame){
             departmentService.calculateDepartmentEmployeeNumber();
         }
     }
+
 
     @Transactional
     public void deleteUserById(Long userId){
@@ -93,6 +116,5 @@ public class UserService {
         }
         return existingUserCheck.get();
     }
-
 
 }

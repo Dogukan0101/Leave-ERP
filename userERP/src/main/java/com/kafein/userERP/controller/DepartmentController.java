@@ -6,6 +6,7 @@ import com.kafein.userERP.model.Leave;
 import com.kafein.userERP.model.User;
 import com.kafein.userERP.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,19 @@ public class DepartmentController {
 
         try {
             return ResponseEntity.ok(departments);
+        } catch (Exception e) {
+            return ResponseEntity.noContent().build();
+        }
+    };
+
+    @CrossOrigin
+    @GetMapping("/getDepartmentPage")
+    public ResponseEntity<Page<Department>> getDepartmentPage(
+            @RequestParam(defaultValue = "0") int page
+    ) {
+        Page<Department> departmentPage = departmentService.getDepartmentPage(page);
+        try {
+            return ResponseEntity.ok(departmentPage);
         } catch (Exception e) {
             return ResponseEntity.noContent().build();
         }

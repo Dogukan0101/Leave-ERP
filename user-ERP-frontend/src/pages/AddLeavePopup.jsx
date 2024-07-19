@@ -103,6 +103,7 @@ const AddLeavePopup = ({ closePopup, user }) => {
             <div className="grid gap-4 mb-4 ">
               <label>Start Date</label>
               <Datepicker
+                minDate={new Date()}
                 maxDate={
                   new Date(leaveEnd.getTime() - 24 * 60 * 60 * 1000)
                 }

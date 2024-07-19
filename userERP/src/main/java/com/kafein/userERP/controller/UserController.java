@@ -3,6 +3,8 @@ package com.kafein.userERP.controller;
 import com.kafein.userERP.model.User;
 import com.kafein.userERP.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,19 @@ public class UserController {
 
         try {
             return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.noContent().build();
+        }
+    };
+
+    @CrossOrigin
+    @GetMapping("/getUserPage")
+    public ResponseEntity<Page<User>> getUserPage(
+            @RequestParam(defaultValue = "0") int page
+            ) {
+        Page<User> userPage = userService.getUserPage(page);
+        try {
+            return ResponseEntity.ok(userPage);
         } catch (Exception e) {
             return ResponseEntity.noContent().build();
         }

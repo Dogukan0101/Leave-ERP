@@ -12,11 +12,19 @@ export const Departments = () => {
 
   const [departmentsArray, setDepartmentsArray] = useState([]);
 
-  const fetchDepartments = async () => {
+  const [pageNum, setPageNum] = useState(0);
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const fetchDepartments = async (curPage) => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        "http://localhost:8080/departments/getAllDepartments",
+        "http://localhost:8080/departments/getDepartmentPage?page=" + (curPage-1),
         {
           method: "GET",
           headers: {
@@ -27,18 +35,18 @@ export const Departments = () => {
       setIsLoading(false);
 
       const data = await response.json();
-      setDepartmentsArray(data);
-      setDepartmentsShow(data);
+      setDepartmentsArray(data.content);
+      setPageNum(data.page.totalPages);
+
     } catch (error) {
       setError(error.message);
     }
   };
 
   useEffect(() => {
-    fetchDepartments();
-  }, []);
+    fetchDepartments(currentPage);
+  }, [currentPage]);
 
-  const [departmentsShow, setDepartmentsShow] = useState(departmentsArray);
 
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const openAddPopup = () => setIsAddPopupOpen(true);
@@ -54,19 +62,6 @@ export const Departments = () => {
   const closeEditPopup = () =>
     setIsEditPopupOpen({ show: false, department: null });
 
-  const searchButtonSubmit = (keyword) => {
-    if (keyword == "") {
-      if (departmentsShow.length != departmentsArray.length)
-        setDepartmentsShow(departmentsArray);
-      return;
-    }
-
-    let newArr = departmentsArray.filter((department) =>
-      department.name.toLowerCase().includes(keyword.toLowerCase())
-    );
-    setDepartmentsShow(newArr);
-  };
-
   if (isEditPopupOpen.show || isAddPopupOpen) {
     document.body.classList.add("overflow-hidden");
   } else {
@@ -80,7 +75,6 @@ export const Departments = () => {
         <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
           <div class="flex flex-row w-6/6 mb-3">
             <SearchBar
-              searchButtonSubmit={searchButtonSubmit}
               class="mr-auto"
             ></SearchBar>
             <InsertButton
@@ -116,7 +110,7 @@ export const Departments = () => {
                   />
                 )}
 
-                {departmentsShow.map((department, index) => (
+                {departmentsArray.map((department, index) => (
                   <tr
                     key={index}
                     class={`border-b dark:bg-gray-800 dark:border-black-700 hover:bg-white dark:hover:bg-gray-600 }`}
@@ -165,6 +159,50 @@ export const Departments = () => {
           </main>
         </div>
       </div>
+      <nav
+        className="bg-center flex justify-center mt-2 mb-2"
+        aria-label="Page navigation example"
+      >
+        <ul className="inline-flex -space-x-px text-base h-10">
+          <li>
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              Previous
+            </button>
+          </li>
+          {Array.from(
+            {
+              length: pageNum,
+            },
+            (_, index) => (
+              <li key={index}>
+                <button
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`flex items-center justify-center px-4 h-10 leading-tight ${
+                    index + 1 === currentPage
+                      ? "text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700"
+                      : "text-gray-500 border-gray-300 bg-white hover:bg-gray-100  hover:text-gray-700"
+                  } dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                >
+                  {index + 1}
+                </button>
+              </li>
+            )
+          )}
+          <li>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === Math.ceil(pageNum)}
+              className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 };

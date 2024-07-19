@@ -5,6 +5,13 @@ import com.kafein.userERP.model.User;
 import com.kafein.userERP.repository.LeaveRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,8 +40,14 @@ public class LeaveService {
         return existingLeaveCheck.get();
     }
 
+    //@Cacheable(cacheNames = "leaves")
     public List<Leave> getAllLeaves(){
         return leaveRepository.findAll();
+    }
+
+    public Page<Leave> getLeavePage(int page){
+        Pageable pageable = PageRequest.of(page,6);
+        return leaveRepository.findAll(pageable);
     }
 
     public boolean hasConflictingLeavesForAdd(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
@@ -49,8 +62,8 @@ public class LeaveService {
         return !conflictingLeaves.isEmpty();
     }
 
-
     @Transactional
+    //@CachePut(cacheNames = "leaves", key = "#result.id")
     public void createLeave(Leave leaveRequest){
 
         if(hasConflictingLeavesForAdd(leaveRequest.getUser().getId(),leaveRequest.getStartDate(),leaveRequest.getEndDate())){
@@ -71,10 +84,10 @@ public class LeaveService {
         user.setRestDay(daysOfRest);
 
         userService.updateUserById(user.getId(), user);
-
     }
 
     @Transactional
+    //@CacheEvict(cacheNames = "leaves", key = "#leaveId")
     public void deleteLeaveById(Long leaveId){
 
         Leave existingLeave = findLeaveById(leaveId);
@@ -90,8 +103,8 @@ public class LeaveService {
         leaveRepository.deleteLeaveById(existingLeave.getId());
     }
 
-
     @Transactional
+    //@CachePut(cacheNames = "leaves", key = "#leaveId")
     public void updateLeaveById(Long leaveId, Leave updatedLeave){
 
         Optional<Leave> existingLeaveCheck = leaveRepository.findById(leaveId);
@@ -119,10 +132,4 @@ public class LeaveService {
         userService.updateUserById(existingUser.getId(),existingUser);
     }
 
-
 }
-
-
-
-
-
