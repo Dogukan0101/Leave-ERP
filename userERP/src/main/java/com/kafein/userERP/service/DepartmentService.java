@@ -42,9 +42,12 @@ public class DepartmentService {
         return departmentRepository.getAllDepartmentOptions();
     }
 
-    public Page<Department> getDepartmentPage(int page){
-        Pageable pageable = PageRequest.of(page,6);
-        return departmentRepository.findAll(pageable);
+    public Page<Department> getDepartmentPage(String search, Pageable pageable){
+        if(search == null || search.isEmpty()) {
+            return departmentRepository.findAll(pageable);
+        } else {
+            return departmentRepository.findByNameContaining(search, pageable);
+        }
     }
 
     @Transactional

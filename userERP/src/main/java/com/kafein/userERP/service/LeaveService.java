@@ -45,9 +45,12 @@ public class LeaveService {
         return leaveRepository.findAll();
     }
 
-    public Page<Leave> getLeavePage(int page){
-        Pageable pageable = PageRequest.of(page,6);
-        return leaveRepository.findAll(pageable);
+    public Page<Leave> getLeavePage(String search, Pageable pageable) {
+        if (search == null || search.isEmpty()) {
+            return leaveRepository.findAll(pageable);
+        } else {
+            return leaveRepository.findByUserFullNameContaining(search, pageable);
+        }
     }
 
     public boolean hasConflictingLeavesForAdd(Long userId, LocalDateTime startDate, LocalDateTime endDate) {

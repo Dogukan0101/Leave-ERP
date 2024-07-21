@@ -1,6 +1,9 @@
 package com.kafein.userERP.repository;
 
 import com.kafein.userERP.model.Leave;
+import com.kafein.userERP.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,4 +26,7 @@ public interface LeaveRepository extends JpaRepository<Leave,Long> {
                                                       @Param("startDate") LocalDateTime startDate,
                                                       @Param("endDate") LocalDateTime endDate,
                                                       @Param("leaveId") Long leaveId);
+
+    Page<Leave> findByUserFullNameContaining(String fullName, Pageable pageable);
+
 }

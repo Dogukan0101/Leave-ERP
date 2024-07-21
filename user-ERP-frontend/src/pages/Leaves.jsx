@@ -6,6 +6,7 @@ import { SideBar } from "../components/SideBar";
 import EditLeavePopup from "./EditLeavePopup";
 
 export const Leaves = () => {
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [leavesArray, setLeavesArray] = useState([]);
@@ -14,15 +15,22 @@ export const Leaves = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const fetchLeaves = async (curPage) => {
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
+  const fetchLeaves = async (curPage,query) => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        "http://localhost:8080/leaves/getLeavePage?page=" + (curPage - 1),
+        "http://localhost:8080/leaves/getLeavePage?page=" + (curPage - 1) + "&search=" + query,
         {
           method: "GET",
           headers: {
@@ -42,8 +50,8 @@ export const Leaves = () => {
   };
 
   useEffect(() => {
-    fetchLeaves(currentPage);
-  }, [currentPage]);
+    fetchLeaves(currentPage, searchQuery);
+  }, [searchQuery,currentPage]);
 
   const [isEditPopupOpen, setIsEditPopupOpen] = useState({
     show: false,
@@ -67,7 +75,7 @@ export const Leaves = () => {
       <div class="p-4 sm:ml-64">
         <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
           <div class="flex flex-row w-6/6 mb-3">
-            <SearchBar class="mr-auto"></SearchBar>
+            <SearchBar searchButtonSubmit={handleSearch} class="mr-auto"></SearchBar>
           </div>
           <main>
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

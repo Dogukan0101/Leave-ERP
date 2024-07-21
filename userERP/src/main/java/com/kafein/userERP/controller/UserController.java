@@ -37,7 +37,7 @@ public class UserController {
     @GetMapping("/getUserPage")
     public Page<User> getUserPage(
             @RequestParam(required = false) String search,
-            @RequestParam int page) {
+            @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page,6);
         return userService.getUserPage(search, pageable);
     }

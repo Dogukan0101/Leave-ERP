@@ -7,6 +7,8 @@ import com.kafein.userERP.model.User;
 import com.kafein.userERP.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,9 +38,11 @@ public class DepartmentController {
     @CrossOrigin
     @GetMapping("/getDepartmentPage")
     public ResponseEntity<Page<Department>> getDepartmentPage(
+            @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "0") int page
     ) {
-        Page<Department> departmentPage = departmentService.getDepartmentPage(page);
+        Pageable pageable = PageRequest.of(page,6);
+        Page<Department> departmentPage = departmentService.getDepartmentPage(search,pageable);
         try {
             return ResponseEntity.ok(departmentPage);
         } catch (Exception e) {

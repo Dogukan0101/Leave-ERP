@@ -8,6 +8,7 @@ import AddDepartmentPopup from "./AddDepartmentPopup";
 import EditDepartmentPopup from "./EditDepartmentPopup";
 
 export const Departments = () => {
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [departmentsArray, setDepartmentsArray] = useState([]);
@@ -16,15 +17,22 @@ export const Departments = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const fetchDepartments = async (curPage) => {
+  const fetchDepartments = async (curPage,query) => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        "http://localhost:8080/departments/getDepartmentPage?page=" + (curPage-1),
+        "http://localhost:8080/departments/getDepartmentPage?page=" + (curPage-1) + "&search=" + query,
         {
           method: "GET",
           headers: {
@@ -44,8 +52,8 @@ export const Departments = () => {
   };
 
   useEffect(() => {
-    fetchDepartments(currentPage);
-  }, [currentPage]);
+    fetchDepartments(currentPage,searchQuery);
+  }, [currentPage,searchQuery]);
 
 
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
@@ -76,6 +84,7 @@ export const Departments = () => {
           <div class="flex flex-row w-6/6 mb-3">
             <SearchBar
               class="mr-auto"
+              searchButtonSubmit={handleSearch}
             ></SearchBar>
             <InsertButton
               description="Add new Employee"
