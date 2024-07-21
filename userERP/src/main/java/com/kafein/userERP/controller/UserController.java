@@ -5,6 +5,8 @@ import com.kafein.userERP.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,16 +35,12 @@ public class UserController {
 
     @CrossOrigin
     @GetMapping("/getUserPage")
-    public ResponseEntity<Page<User>> getUserPage(
-            @RequestParam(defaultValue = "0") int page
-            ) {
-        Page<User> userPage = userService.getUserPage(page);
-        try {
-            return ResponseEntity.ok(userPage);
-        } catch (Exception e) {
-            return ResponseEntity.noContent().build();
-        }
-    };
+    public Page<User> getUserPage(
+            @RequestParam(required = false) String search,
+            @RequestParam int page) {
+        Pageable pageable = PageRequest.of(page,6);
+        return userService.getUserPage(search, pageable);
+    }
 
     @CrossOrigin
     @GetMapping("/findUserById")

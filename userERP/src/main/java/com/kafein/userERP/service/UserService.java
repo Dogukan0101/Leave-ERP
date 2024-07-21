@@ -49,16 +49,19 @@ public class UserService {
         }
         return userOptional.get();
     }
-     */
+    */
 
     //@Cacheable(cacheNames = "users")
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
 
-    public Page<User> getUserPage(int page){
-        Pageable pageable = PageRequest.of(page,6);
-        return userRepository.findAll(pageable);
+    public Page<User> getUserPage(String search, Pageable pageable) {
+        if (search == null || search.isEmpty()) {
+            return userRepository.findAll(pageable);
+        } else {
+            return userRepository.findByFullNameContaining(search, pageable);
+        }
     }
 
     @Transactional

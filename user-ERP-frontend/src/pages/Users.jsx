@@ -8,7 +8,9 @@ import EditUserPopup from "./EditUserPopup";
 import { SideBar } from "../components/SideBar";
 import AddLeavePopup from "./AddLeavePopup";
 
+
 export const Users = () => {
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [usersArray, setUsersArray] = useState([]);
@@ -17,14 +19,21 @@ export const Users = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const fetchUsers = async (curPage) => {
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
+  const fetchUsers = async (curPage,query) => {
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:8080/users/getUserPage?page=" + (curPage-1), 
+      const response = await fetch("http://localhost:8080/users/getUserPage?page=" + (curPage-1) + "&search=" + query, 
         {
         method: "GET",
         headers: {
@@ -44,8 +53,8 @@ export const Users = () => {
   };
 
   useEffect(() => {
-    fetchUsers(currentPage);
-  }, [currentPage]);
+    fetchUsers(currentPage, searchQuery);
+  }, [currentPage, searchQuery]);
 
 
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
@@ -56,6 +65,7 @@ export const Users = () => {
     show: false,
     user: null,
   });
+
   const openEditPopup = (userA) =>
     setIsEditPopupOpen({ show: true, user: userA });
   const closeEditPopup = () => setIsEditPopupOpen({ show: false, user: null });
@@ -81,14 +91,11 @@ export const Users = () => {
   return (
     <div>
       <SideBar />
-      {
-    console.log(usersArray)
-
-      }
       <div class="p-4 sm:ml-64">
         <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
           <div class="flex flex-row w-6/6 mb-3">
             <SearchBar
+              searchButtonSubmit={handleSearch}
               class="mr-auto"
             ></SearchBar>
             <InsertButton
