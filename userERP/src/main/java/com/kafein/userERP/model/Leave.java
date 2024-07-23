@@ -13,7 +13,6 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @ToString
