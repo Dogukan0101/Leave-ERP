@@ -30,7 +30,7 @@ export const Leaves = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        "http://localhost:8080/leaves/getLeavePage?page=" + (curPage - 1) + "&search=" + query,
+        "http://localhost:8081/leaves/getLeavePage?page=" + (curPage - 1) + "&search=" + query,
         {
           method: "GET",
           headers: {

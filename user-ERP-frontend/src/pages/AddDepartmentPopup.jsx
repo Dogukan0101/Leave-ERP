@@ -14,7 +14,7 @@ const AddDepartmentPopup = ({ closePopup }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/departments/createDepartment",
+        "http://localhost:8081/departments/createDepartment",
         {
           method: "POST",
           headers: {

@@ -32,7 +32,7 @@ const AddLeavePopup = ({ closePopup, user }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/leaves/createLeave", {
+      const response = await fetch("http://localhost:8081/leaves/createLeave", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

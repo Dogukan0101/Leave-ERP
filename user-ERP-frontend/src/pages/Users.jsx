@@ -33,7 +33,7 @@ export const Users = () => {
   const fetchUsers = async (curPage,query) => {
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:8080/users/getUserPage?page=" + (curPage-1) + "&search=" + query, 
+      const response = await fetch("http://localhost:8081/users/getUserPage?page=" + (curPage-1) + "&search=" + query, 
         {
         method: "GET",
         headers: {

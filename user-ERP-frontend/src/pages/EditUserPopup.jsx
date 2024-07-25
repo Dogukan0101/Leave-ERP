@@ -22,7 +22,7 @@ const EditUserPopup = ({ closePopup, user }) => {
   const fetchDepartmentsSelections = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/departments/getAllDepartmentsForOptions",
+        "http://localhost:8081/departments/getAllDepartmentsForOptions",
         {
           method: "GET",
           headers: {
@@ -64,7 +64,7 @@ const EditUserPopup = ({ closePopup, user }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/users/updateUserById",
+        "http://localhost:8081/users/updateUserById",
         {
           method: "POST",
           headers: {
@@ -108,7 +108,7 @@ const EditUserPopup = ({ closePopup, user }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/users/deleteUserById?userId=" + user.id,
+        "http://localhost:8081/users/deleteUserById?userId=" + user.id,
         {
           method: "DELETE",
           headers: {

@@ -32,7 +32,7 @@ export const Departments = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        "http://localhost:8080/departments/getDepartmentPage?page=" + (curPage-1) + "&search=" + query,
+        "http://localhost:8081/departments/getDepartmentPage?page=" + (curPage-1) + "&search=" + query,
         {
           method: "GET",
           headers: {

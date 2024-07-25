@@ -14,7 +14,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
   const fetchUserById = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/users/findUserById?userId=" + leave.user.id,
+        "http://localhost:8081/users/findUserById?userId=" + leave.user.id,
         {
           method: "GET",
           headers: {
@@ -59,7 +59,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/leaves/updateLeaveById",
+        "http://localhost:8081/leaves/updateLeaveById",
         {
           method: "POST",
           headers: {
@@ -102,7 +102,7 @@ const EditLeavePopup = ({ closePopup, leave }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/leaves/deleteLeaveById?leaveId=" + leave.id,
+        "http://localhost:8081/leaves/deleteLeaveById?leaveId=" + leave.id,
         {
           method: "DELETE",
           headers: {

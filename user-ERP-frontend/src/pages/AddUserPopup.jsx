@@ -19,7 +19,7 @@ const AddUserPopup = ({ closePopup }) => {
   const fetchDepartmentsSelections = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/departments/getAllDepartmentsForOptions",
+        "http://localhost:8081/departments/getAllDepartmentsForOptions",
         {
           method: "GET",
           headers: {
@@ -59,7 +59,7 @@ const AddUserPopup = ({ closePopup }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/users/createUser", {
+      const response = await fetch("http://localhost:8081/users/createUser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -16,7 +16,7 @@ const EditDepartmentPopup = ({ closePopup, department }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/departments/updateDepartmentById",
+        "http://localhost:8081/departments/updateDepartmentById",
         {
           method: "POST",
           headers: {
@@ -54,7 +54,7 @@ const EditDepartmentPopup = ({ closePopup, department }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/departments/deleteDepartmentById?departmentId=" +
+        "http://localhost:8081/departments/deleteDepartmentById?departmentId=" +
           department.id,
         {
           method: "DELETE",
