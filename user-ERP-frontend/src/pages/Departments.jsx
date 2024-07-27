@@ -19,6 +19,8 @@ export const Departments = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
 
+  const [departmentEmployeeCountDTOs, setDepartmentEmployeeCountDTOs] = useState([]);
+
   const handleSearch = (query) => {
     setSearchQuery(query);
     setCurrentPage(1);
@@ -47,11 +49,31 @@ export const Departments = () => {
       setPageNum(data.page.totalPages);
 
     } catch (error) {
-      setError(error.message);
+      console.log(error.message);
+    }
+  };
+
+  const fetchDepartmentEmployeeCount = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8081/departments/getDepartmentEmployeeCount",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      setDepartmentEmployeeCountDTOs(data);
+
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
   useEffect(() => {
+    fetchDepartmentEmployeeCount();
     fetchDepartments(currentPage,searchQuery);
   }, [currentPage,searchQuery]);
 
@@ -64,6 +86,7 @@ export const Departments = () => {
     show: false,
     department: null,
   });
+
   const openEditPopup = (department) =>
     setIsEditPopupOpen({ show: true, department: department });
 
@@ -75,6 +98,14 @@ export const Departments = () => {
   } else {
     document.body.classList.remove("overflow-hidden");
   }
+
+  const getEmployeeCount = (departmentName) => {
+    if (!departmentEmployeeCountDTOs || departmentEmployeeCountDTOs.length === 0) {
+      return 0;
+    }
+    const department = departmentEmployeeCountDTOs.find((dto) => dto.departmentName === departmentName);
+    return department ? department.employeeCount : 0;
+  };
 
   return (
     <div>
@@ -131,7 +162,7 @@ export const Departments = () => {
                       {department.id}
                     </th>
                     <td class="px-6 py-4">{department.name}</td>
-                    <td class="px-6 py-4">{department.numOfEmployees}</td>
+                    <td class="px-6 py-4">{getEmployeeCount(department.name)}</td>
                     <td class="px-6 py-4">
                       <div
                         onClick={() => openEditPopup(department)}

@@ -1,5 +1,6 @@
 package com.kafein.userERP.controller;
 
+import com.kafein.userERP.dtos.DepartmentEmployeeCountDTO;
 import com.kafein.userERP.dtos.DepartmentOptionsDTO;
 import com.kafein.userERP.model.Department;
 import com.kafein.userERP.model.Leave;
@@ -22,7 +23,6 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
-    @CrossOrigin
     @GetMapping("/getAllDepartments")
     public ResponseEntity<List<Department>> getAllDepartments() {
 
@@ -35,7 +35,11 @@ public class DepartmentController {
         }
     };
 
-    @CrossOrigin
+    @GetMapping("/getDepartmentEmployeeCount")
+    public List<DepartmentEmployeeCountDTO> getDepartmentEmployeeCounts() {
+        return departmentService.getDepartmentEmployeeCounts();
+    }
+
     @GetMapping("/getDepartmentPage")
     public ResponseEntity<Page<Department>> getDepartmentPage(
             @RequestParam(required = false) String search,
@@ -50,7 +54,6 @@ public class DepartmentController {
         }
     };
 
-    @CrossOrigin
     @GetMapping("/getAllDepartmentsForOptions")
     public ResponseEntity<List<DepartmentOptionsDTO>> getAllDepartmentsForOptions() {
 
@@ -64,18 +67,6 @@ public class DepartmentController {
         }
     };
 
-    @CrossOrigin
-    @GetMapping("/calculateDepartment")
-    public ResponseEntity<Void> calculateDepartment() {
-        try {
-            departmentService.calculateDepartmentEmployeeNumber();
-        } catch (Exception e) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().build();
-    };
-
-    @CrossOrigin
     @PostMapping("/createDepartment")
     public ResponseEntity<Department> createDepartment(@RequestBody Department departmentRequest) {
         try {
@@ -85,7 +76,6 @@ public class DepartmentController {
         }
     }
 
-    @CrossOrigin
     @PostMapping("/updateDepartmentById")
     public ResponseEntity<Void> updateDepartmentById(@RequestBody Department departmentRequest){
         try {
@@ -96,7 +86,6 @@ public class DepartmentController {
         return ResponseEntity.ok().build();
     };
 
-    @CrossOrigin
     @DeleteMapping("/deleteDepartmentById")
     public ResponseEntity<Void> deleteDepartmentById(@RequestParam Long departmentId){
         try {
@@ -106,7 +95,5 @@ public class DepartmentController {
         }
         return ResponseEntity.ok().build();
     }
-
-
 
 }

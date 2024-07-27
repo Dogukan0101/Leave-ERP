@@ -31,27 +31,9 @@ public class UserService {
         newUser.setDepartment(userRequest.getDepartment());
         newUser.setRestDay(userRequest.getRestDay());
 
-        User savedUser = userRepository.save(newUser);
-
-        //refreshUserCache(savedUser.getId());
-
-        departmentService.calculateDepartmentEmployeeNumber();
-
-        return savedUser;
+        return userRepository.save(newUser);
     }
 
-    /*
-    @CachePut(cacheNames = "users", key = "#userId")
-    public User refreshUserCache(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isEmpty()) {
-            throw new NoSuchElementException("User with id " + userId + " not found.");
-        }
-        return userOptional.get();
-    }
-    */
-
-    //@Cacheable(cacheNames = "users")
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
@@ -78,20 +60,9 @@ public class UserService {
         existingUser.setFullName(updatedUser.getFullName());
         existingUser.setEmail(updatedUser.getEmail());
         existingUser.setRestDay(updatedUser.getRestDay());
-
-        Long oldDepartment = existingUser.getDepartment().getId();
-        Long newDepartment = updatedUser.getDepartment().getId();
-        boolean areDepartmentsSame = oldDepartment.equals(newDepartment);
-
         existingUser.setDepartment(updatedUser.getDepartment());
 
-        User savedUser = userRepository.save(existingUser);
-
-        //refreshUserCache(savedUser.getId());
-
-        if(!areDepartmentsSame){
-            departmentService.calculateDepartmentEmployeeNumber();
-        }
+        userRepository.save(existingUser);
     }
 
 
@@ -107,8 +78,6 @@ public class UserService {
         User existingUser = existingUserCheck.get();
 
         userRepository.deleteUserById(existingUser.getId());
-
-        departmentService.calculateDepartmentEmployeeNumber();
     }
 
     public User findUserById(Long userId){

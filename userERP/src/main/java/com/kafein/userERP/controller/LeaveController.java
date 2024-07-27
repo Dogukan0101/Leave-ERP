@@ -19,7 +19,6 @@ public class LeaveController {
     @Autowired
     private LeaveService leaveService;
 
-    @CrossOrigin
     @GetMapping("/getAllLeaves")
     public ResponseEntity<List<Leave>> getAllLeaves(){
 
@@ -32,7 +31,6 @@ public class LeaveController {
         }
     }
 
-    @CrossOrigin
     @GetMapping("/getLeavePage")
     public ResponseEntity<Page<Leave>> getLeavePage(
             @RequestParam(required = false) String search,
@@ -46,7 +44,6 @@ public class LeaveController {
         }
     };
 
-    @CrossOrigin
     @PostMapping("/createLeave")
     public ResponseEntity<Void> createLeave(@RequestBody Leave leaveRequest){
         try {
@@ -57,7 +54,6 @@ public class LeaveController {
         return ResponseEntity.ok().build();
     };
 
-    @CrossOrigin
     @PostMapping("/updateLeaveById")
     public ResponseEntity<Void> updateLeaveById(@RequestBody Leave leaveRequest){
         try {
@@ -71,7 +67,6 @@ public class LeaveController {
         return ResponseEntity.ok().build();
     };
 
-    @CrossOrigin
     @DeleteMapping("/deleteLeaveById")
     public ResponseEntity<Void> deleteLeaveById(@RequestParam Long leaveId){
         try {
@@ -82,7 +77,6 @@ public class LeaveController {
         return ResponseEntity.ok().build();
     }
 
-    @CrossOrigin
     @GetMapping("/getLeaveById")
     public ResponseEntity<Leave> getLeaveById(@RequestParam Long leaveId){
 

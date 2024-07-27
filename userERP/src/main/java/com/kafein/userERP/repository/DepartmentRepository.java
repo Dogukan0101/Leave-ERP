@@ -1,5 +1,6 @@
 package com.kafein.userERP.repository;
 
+import com.kafein.userERP.dtos.DepartmentEmployeeCountDTO;
 import com.kafein.userERP.dtos.DepartmentOptionsDTO;
 import com.kafein.userERP.model.Department;
 import org.springframework.data.domain.Page;
@@ -15,8 +16,11 @@ public interface DepartmentRepository extends JpaRepository<Department,Long> {
     @Query("SELECT new com.kafein.userERP.dtos.DepartmentOptionsDTO(d.id, d.name) FROM Department d")
     List<DepartmentOptionsDTO> getAllDepartmentOptions();
 
-    @Query("SELECT d.id, COUNT(u.id) FROM Department d LEFT JOIN d.users u GROUP BY d.id")
-    List<Object[]> getDepartmentEmployeeCounts();
-
     Page<Department> findByNameContaining(String departmentName, Pageable pageable);
+
+    @Query("SELECT new com.kafein.userERP.dtos.DepartmentEmployeeCountDTO(d.name, COUNT(u.id)) " +
+            "FROM Department d LEFT JOIN d.users u " +
+            "GROUP BY d.id, d.name")
+    List<DepartmentEmployeeCountDTO> findDepartmentEmployeeCounts();
+
 }

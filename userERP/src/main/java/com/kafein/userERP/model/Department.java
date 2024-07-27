@@ -23,8 +23,6 @@ public class Department implements Serializable {
     @Column(unique = true)
     private String name;
 
-    private int numOfEmployees;
-
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<User> users;

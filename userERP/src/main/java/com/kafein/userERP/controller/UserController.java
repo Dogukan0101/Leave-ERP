@@ -20,7 +20,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @CrossOrigin
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<User>> getAllUsers() {
 
@@ -33,7 +32,6 @@ public class UserController {
         }
     };
 
-    @CrossOrigin
     @GetMapping("/getUserPage")
     public Page<User> getUserPage(
             @RequestParam(required = false) String search,
@@ -42,7 +40,6 @@ public class UserController {
         return userService.getUserPage(search, pageable);
     }
 
-    @CrossOrigin
     @GetMapping("/findUserById")
     public ResponseEntity<User> getUserById(@RequestParam Long userId) {
 
@@ -55,7 +52,6 @@ public class UserController {
         }
     };
 
-    @CrossOrigin
     @PostMapping("/createUser")
     public ResponseEntity<User> createUser(@RequestBody User userRequest) {
         try {
@@ -65,7 +61,6 @@ public class UserController {
         }
     }
 
-    @CrossOrigin
     @PostMapping("/updateUserById")
     public ResponseEntity<User> updateUserById(@RequestBody User updatedUser){
         try {
@@ -76,7 +71,6 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @CrossOrigin
     @DeleteMapping("/deleteUserById")
     public ResponseEntity<Void> deleteUserById(@RequestParam Long userId){
         try {
