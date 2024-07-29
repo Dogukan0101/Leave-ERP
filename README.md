@@ -14,6 +14,7 @@ Leave ERP is a human resources leave tracking web application which ensures to k
 - Pagination on Backend
 - Search on Backend
 - Containerization
+- Valid Leave Date Check
 
 ## Screenshots:
 
