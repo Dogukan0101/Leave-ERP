@@ -4,7 +4,6 @@ Leave ERP is a human resources leave tracking web application which ensures to k
 ## Technologies Used:
 - Spring Boot
 - MySQL
-- Redis
 - React
 - Tailwind CSS
 - Docker
