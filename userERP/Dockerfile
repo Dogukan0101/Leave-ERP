@@ -1,6 +1,6 @@
-FROM openjdk:17-jdk-alpine
+FROM openjdk:21-jdk
 
-RUN addgroup -S app && adduser -S app -G app
+RUN groupadd app && useradd -g app -s /bin/sh -m app
 
 USER app
 
