@@ -1,10 +1,12 @@
-import { Datepicker } from "flowbite-react";
 import React from "react";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 const EditDepartmentPopup = ({ closePopup, department }) => {
+
   const [name, setName] = useState(department.name);
+
+  const api_url = import.meta.env.VITE_API_URL
 
   const handleUpdateDepartment = async (event) => {
     event.preventDefault();
@@ -16,7 +18,7 @@ const EditDepartmentPopup = ({ closePopup, department }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:8081/departments/updateDepartmentById",
+        `${api_url}/departments/updateDepartmentById`,
         {
           method: "POST",
           headers: {
@@ -53,8 +55,9 @@ const EditDepartmentPopup = ({ closePopup, department }) => {
     closePopup();
 
     try {
+      const api_url = process.env.VITE_API_URL; 
       const response = await fetch(
-        "http://localhost:8081/departments/deleteDepartmentById?departmentId=" +
+        `${api_url}/departments/deleteDepartmentById?departmentId=` +
           department.id,
         {
           method: "DELETE",

@@ -21,6 +21,8 @@ export const Users = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
 
+  const api_url = import.meta.env.VITE_API_URL
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -33,7 +35,7 @@ export const Users = () => {
   const fetchUsers = async (curPage,query) => {
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:8081/users/getUserPage?page=" + (curPage-1) + "&search=" + query, 
+      const response = await fetch(`${api_url}/users/getUserPage?page=` + (curPage-1) + `&search=` + query, 
         {
         method: "GET",
         headers: {
@@ -41,14 +43,13 @@ export const Users = () => {
         },
       });
       setIsLoading(false);
-
       const data = await response.json();
 
       setUsersArray(data.content);
       setPageNum(data.page.totalPages);
 
     } catch (error) {
-      setError(error.message);
+      console.log(error.message);
     }
   };
 

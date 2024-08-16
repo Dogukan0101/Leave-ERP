@@ -6,7 +6,6 @@ import { SideBar } from "../components/SideBar";
 import EditLeavePopup from "./EditLeavePopup";
 
 export const Leaves = () => {
-
   const [isLoading, setIsLoading] = useState(false);
 
   const [leavesArray, setLeavesArray] = useState([]);
@@ -16,6 +15,8 @@ export const Leaves = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [searchQuery, setSearchQuery] = useState("");
+
+  const api_url = import.meta.env.VITE_API_URL
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -30,7 +31,7 @@ export const Leaves = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        "http://localhost:8081/leaves/getLeavePage?page=" + (curPage - 1) + "&search=" + query,
+        `${api_url}/leaves/getLeavePage?page=` + (curPage - 1) + `&search=` + query,
         {
           method: "GET",
           headers: {

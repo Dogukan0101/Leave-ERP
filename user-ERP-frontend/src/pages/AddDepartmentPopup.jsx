@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 const AddDepartmentPopup = ({ closePopup }) => {
   const [departmentName, setDepartmentName] = useState("");
 
-
   const onSubmitFunction = async (event) => {
     event.preventDefault();
 
@@ -12,9 +11,11 @@ const AddDepartmentPopup = ({ closePopup }) => {
       name: departmentName,
     };
 
+    const api_url = import.meta.env.VITE_API_URL
+
     try {
       const response = await fetch(
-        "http://localhost:8081/departments/createDepartment",
+        `${api_url}/departments/createDepartment`,
         {
           method: "POST",
           headers: {

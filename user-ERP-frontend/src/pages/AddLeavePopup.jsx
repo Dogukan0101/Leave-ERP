@@ -10,6 +10,8 @@ const AddLeavePopup = ({ closePopup, user }) => {
     new Date(leaveStart.getTime() + 24 * 60 * 60 * 1000)
   );
 
+  const api_url = import.meta.env.VITE_API_URL
+
   const handleAddLeave = async (event) => {
     event.preventDefault();
 
@@ -32,7 +34,7 @@ const AddLeavePopup = ({ closePopup, user }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:8081/leaves/createLeave", {
+      const response = await fetch(`${api_url}/leaves/createLeave`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

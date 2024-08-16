@@ -21,6 +21,8 @@ export const Departments = () => {
 
   const [departmentEmployeeCountDTOs, setDepartmentEmployeeCountDTOs] = useState([]);
 
+  const api_url = import.meta.env.VITE_API_URL
+
   const handleSearch = (query) => {
     setSearchQuery(query);
     setCurrentPage(1);
@@ -34,7 +36,7 @@ export const Departments = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        "http://localhost:8081/departments/getDepartmentPage?page=" + (curPage-1) + "&search=" + query,
+        `${api_url}/departments/getDepartmentPage?page=` + (curPage-1) + `&search=` + query,
         {
           method: "GET",
           headers: {
@@ -56,7 +58,7 @@ export const Departments = () => {
   const fetchDepartmentEmployeeCount = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8081/departments/getDepartmentEmployeeCount",
+        `${api_url}/departments/getDepartmentEmployeeCount`,
         {
           method: "GET",
           headers: {

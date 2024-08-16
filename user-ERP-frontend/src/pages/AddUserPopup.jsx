@@ -16,10 +16,12 @@ const AddUserPopup = ({ closePopup }) => {
 
   const [departmentId, setDepartmentId] = useState("");
 
+  const api_url = import.meta.env.VITE_API_URL
+
   const fetchDepartmentsSelections = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8081/departments/getAllDepartmentsForOptions",
+        `${api_url}/departments/getAllDepartmentsForOptions`,
         {
           method: "GET",
           headers: {
@@ -59,7 +61,7 @@ const AddUserPopup = ({ closePopup }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:8081/users/createUser", {
+      const response = await fetch(`${api_url}/users/createUser`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
