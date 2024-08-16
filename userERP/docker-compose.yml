@@ -4,8 +4,8 @@ services:
     image: mysql:8.0.13
     environment:
       MYSQL_DATABASE: usererp
-      MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: dogu4891..00
+      MYSQL_USER: DB_USERNAME
+      MYSQL_ROOT_PASSWORD: DB_PASSWORD
     ports:
       - "3307:3306"
 
@@ -13,8 +13,8 @@ services:
     image: usererp-springboot
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/usererp
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: dogu4891..00
+      SPRING_DATASOURCE_USERNAME: DB_USERNAME
+      SPRING_DATASOURCE_PASSWORD: DB_PASSWORD
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
       - "8081:8080"
