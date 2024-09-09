@@ -7,12 +7,14 @@ Leave ERP is a human resources leave tracking web application which ensures to k
 - React
 - Tailwind CSS
 - Docker
+- AWS Elastic Beanstalk
 
 ## Features Involved:
 - Rest API
 - Pagination on Backend
 - Search on Backend
 - Containerization
+- Deployed at AWS
 - Valid Leave Date Check
 
 ## Screenshots:
